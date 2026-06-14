@@ -1,13 +1,15 @@
-# Infinite Yield
+# Finite Yield
 
-The best command line script for roblox.
+The best **FORKED** command line script for roblox.
 
+IY discord:
 [![](https://dcbadge.limes.pink/api/server/https://discord.gg/78ZuWSq)](https://discord.gg/78ZuWSq)
 
 ```lua
 loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source"))()
 ```
 
+For them it's:
  - Currently 400 commands
  - Open Source
  - 8+ years of development
@@ -16,6 +18,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/
 
 ### Creator: [Edge](https://github.com/EdgeIY)
 ### Developers: [Moon](https://github.com/LorekeeperZinnia), [Zwolf](https://github.com/luatsuki), [Hunter](https://github.com/tooslzy), [Toon](https://github.com/Toon-arch), [Peyton](https://github.com/peyton2465), [ATP](https://github.com/ionizedparticle)
+### Some random guy who forked the repo:
+**[Serhii](https://github.com/CoderSerg)**
 
 ## Usage
 You can learn how to use all the features of this script in [the wiki](https://github.com/EdgeIY/infiniteyield/wiki)!
