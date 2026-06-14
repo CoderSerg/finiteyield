@@ -1,5 +1,7 @@
+-- Full credit goes to Infinite Yield, this just builds on top of it
+
 if IY_LOADED and not _G.IY_DEBUG then
-	-- error("Infinite Yield is already running!", 0)
+	notify("Finite Yield", "Tried to load twice or more without debug, ignoring")
 	return
 end
 
@@ -104,52 +106,25 @@ isLegacyChat = TextChatService.ChatVersion == Enum.ChatVersion.LegacyChatService
     return gethidden(workspace, "RejectCharacterDeletions") ~= Enum.RejectCharacterDeletions.Disabled
 end)) or false]]
 
+-- Swapped to "Lucide Icons" provided by icons.rest as rbxassetids
+
 -- xylex & europa
-local iyassets = {
-	["infiniteyield/assets/bindsandplugins.png"] = "rbxassetid://5147695474",
-	["infiniteyield/assets/close.png"] = "rbxassetid://5054663650",
-	["infiniteyield/assets/editaliases.png"] = "rbxassetid://5147488658",
-	["infiniteyield/assets/editkeybinds.png"] = "rbxassetid://129697930",
-	["infiniteyield/assets/edittheme.png"] = "rbxassetid://4911962991",
-	["infiniteyield/assets/editwaypoints.png"] = "rbxassetid://5147488592",
-	["infiniteyield/assets/imgstudiopluginlogo.png"] = "rbxassetid://4113050383",
-	["infiniteyield/assets/logo.png"] = "rbxassetid://1352543873",
-	["infiniteyield/assets/minimize.png"] = "rbxassetid://2406617031",
-	["infiniteyield/assets/pin.png"] = "rbxassetid://6234691350",
-	["infiniteyield/assets/reference.png"] = "rbxassetid://3523243755",
-	["infiniteyield/assets/settings.png"] = "rbxassetid://1204397029"
-}
+--local iyassets = {
+--	["infiniteyield/assets/bindsandplugins.png"] = "rbxassetid://5147695474",
+--	["infiniteyield/assets/close.png"] = "rbxassetid://5054663650",
+--	["infiniteyield/assets/editaliases.png"] = "rbxassetid://5147488658",
+--	["infiniteyield/assets/editkeybinds.png"] = "rbxassetid://129697930",
+--	["infiniteyield/assets/edittheme.png"] = "rbxassetid://4911962991",
+--	["infiniteyield/assets/editwaypoints.png"] = "rbxassetid://5147488592",
+--	["infiniteyield/assets/imgstudiopluginlogo.png"] = "rbxassetid://4113050383",
+--	["infiniteyield/assets/logo.png"] = "rbxassetid://1352543873",
+--	["infiniteyield/assets/minimize.png"] = "rbxassetid://2406617031",
+--	["infiniteyield/assets/pin.png"] = "rbxassetid://6234691350",
+--	["infiniteyield/assets/reference.png"] = "rbxassetid://3523243755",
+--	["infiniteyield/assets/settings.png"] = "rbxassetid://1204397029"
+--}
 
-local function getcustomasset(asset)
-	if waxgetcustomasset then
-		local success, result = pcall(function()
-			return waxgetcustomasset(asset)
-		end)
-		if success and result ~= nil and result ~= "" then
-			return result
-		end
-	end
-	return iyassets[asset]
-end
-
-if makefolder and isfolder and writefile and isfile then
-	pcall(function() -- good executor trust
-		local assets = "https://raw.githubusercontent.com/infyiff/backup/refs/heads/main/"
-		for _, folder in {"infiniteyield", "infiniteyield/assets"} do
-			if not isfolder(folder) then
-				makefolder(folder)
-			end
-		end
-		for path in iyassets do
-			if not isfile(path) then
-				writefile(path, game:HttpGet((path:gsub("infiniteyield/", assets))))
-			end
-		end
-		if IsOnMobile then writefile("infiniteyield/assets/.nomedia", "") end
-	end)
-end
-
-currentVersion = "6.4.1"
+currentVersion = "1.1.4"
 
 ScaledHolder = Instance.new("Frame")
 Scale = Instance.new("UIScale")
@@ -354,7 +329,7 @@ Title.BorderSizePixel = 0
 Title.Size = UDim2.new(0, 250, 0, 20)
 Title.Font = Enum.Font.SourceSans
 Title.TextSize = 18
-Title.Text = "Infinite Yield FE v" .. currentVersion
+Title.Text = "Finite Yield v" .. currentVersion
 
 do
 	local emoji = ({
@@ -413,7 +388,7 @@ Cmdbar.TextXAlignment = Enum.TextXAlignment.Left
 Cmdbar.TextColor3 = Color3.new(1, 1, 1)
 Cmdbar.Text = ""
 Cmdbar.ZIndex = 10
-Cmdbar.PlaceholderText = "Command Bar"
+Cmdbar.PlaceholderText = "Type a command"
 
 CMDsF.Name = "CMDs"
 CMDsF.Parent = Holder
@@ -437,8 +412,8 @@ SettingsButton.Name = "SettingsButton"
 SettingsButton.Parent = Holder
 SettingsButton.BackgroundTransparency = 1
 SettingsButton.Position = UDim2.new(0, 230, 0, 0)
-SettingsButton.Size = UDim2.new(0, 20, 0, 20)
-SettingsButton.Image = getcustomasset("infiniteyield/assets/settings.png")
+SettingsButton.Size = UDim2.new(0, 19, 0, 19)
+SettingsButton.Image = "rbxassetid://106205298246017" -- Settings icon: settings --
 SettingsButton.ZIndex = 10
 
 ReferenceButton = Instance.new("ImageButton")
@@ -447,7 +422,7 @@ ReferenceButton.Parent = Holder
 ReferenceButton.BackgroundTransparency = 1
 ReferenceButton.Position = UDim2.new(0, 212, 0, 2)
 ReferenceButton.Size = UDim2.new(0, 16, 0, 16)
-ReferenceButton.Image = getcustomasset("infiniteyield/assets/reference.png")
+ReferenceButton.Image = "rbxassetid://130311722822005" -- Info icon: book-marked --
 ReferenceButton.ZIndex = 10
 
 Settings.Name = "Settings"
@@ -544,19 +519,19 @@ function makeSettingsButton(name,iconID,off)
 	return button
 end
 
-ColorsButton = makeSettingsButton("Edit Theme",getcustomasset("infiniteyield/assets/edittheme.png"))
+ColorsButton = makeSettingsButton("Customize colors","rbxassetid://127369887384101")
 ColorsButton.Position = UDim2.new(0, 5, 0, 55)
 ColorsButton.Size = UDim2.new(1, -10, 0, 25)
 ColorsButton.Name = "Colors"
 ColorsButton.Parent = SettingsHolder
 
-Keybinds = makeSettingsButton("Edit Keybinds",getcustomasset("infiniteyield/assets/editkeybinds.png"))
+Keybinds = makeSettingsButton("Rebind keys","rbxassetid://121978468376124")
 Keybinds.Position = UDim2.new(0, 5, 0, 85)
 Keybinds.Size = UDim2.new(1, -10, 0, 25)
 Keybinds.Name = "Keybinds"
 Keybinds.Parent = SettingsHolder
 
-Aliases = makeSettingsButton("Edit Aliases",getcustomasset("infiniteyield/assets/editaliases.png"))
+Aliases = makeSettingsButton("Change aliases","rbxassetid://107047557421203")
 Aliases.Position = UDim2.new(0, 5, 0, 115)
 Aliases.Size = UDim2.new(1, -10, 0, 25)
 Aliases.Name = "Aliases"
@@ -564,7 +539,6 @@ Aliases.Parent = SettingsHolder
 
 StayOpen.Name = "StayOpen"
 StayOpen.Parent = SettingsHolder
-StayOpen.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
 StayOpen.BorderSizePixel = 0
 StayOpen.BackgroundTransparency = 1
 StayOpen.Position = UDim2.new(0, 5, 0, 30)
@@ -572,7 +546,6 @@ StayOpen.Size = UDim2.new(1, -10, 0, 20)
 StayOpen.Font = Enum.Font.SourceSans
 StayOpen.TextSize = 14
 StayOpen.Text = "Keep Menu Open"
-StayOpen.TextColor3 = Color3.new(1, 1, 1)
 StayOpen.TextXAlignment = Enum.TextXAlignment.Left
 StayOpen.ZIndex = 10
 table.insert(shade2,StayOpen)
@@ -580,7 +553,6 @@ table.insert(text1,StayOpen)
 
 Button.Name = "Button"
 Button.Parent = StayOpen
-Button.BackgroundColor3 = Color3.fromRGB(78, 78, 79)
 Button.BorderSizePixel = 0
 Button.Position = UDim2.new(1, -20, 0, 0)
 Button.Size = UDim2.new(0, 20, 0, 20)
@@ -589,7 +561,6 @@ table.insert(shade3,Button)
 
 On.Name = "On"
 On.Parent = Button
-On.BackgroundColor3 = Color3.fromRGB(150, 150, 151)
 On.BackgroundTransparency = 1
 On.BorderSizePixel = 0
 On.Position = UDim2.new(0, 2, 0, 2)
@@ -597,22 +568,21 @@ On.Size = UDim2.new(0, 16, 0, 16)
 On.Font = Enum.Font.SourceSans
 On.FontSize = Enum.FontSize.Size14
 On.Text = ""
-On.TextColor3 = Color3.new(0, 0, 0)
 On.ZIndex = 10
 
-Positions = makeSettingsButton("Edit/Goto Waypoints",getcustomasset("infiniteyield/assets/editwaypoints.png"))
+Positions = makeSettingsButton("Manage waypoints", "rbxassetid://137091405832737")
 Positions.Position = UDim2.new(0, 5, 0, 145)
 Positions.Size = UDim2.new(1, -10, 0, 25)
 Positions.Name = "Waypoints"
 Positions.Parent = SettingsHolder
 
-EventBind = makeSettingsButton("Edit Event Binds",getcustomasset("infiniteyield/assets/bindsandplugins.png"),759)
+EventBind = makeSettingsButton("Change event binds", "rbxassetid://82061714010896")
 EventBind.Position = UDim2.new(0, 5, 0, 205)
 EventBind.Size = UDim2.new(1, -10, 0, 25)
 EventBind.Name = "EventBinds"
 EventBind.Parent = SettingsHolder
 
-Plugins = makeSettingsButton("Manage Plugins",getcustomasset("infiniteyield/assets/bindsandplugins.png"),743)
+Plugins = makeSettingsButton("Manage plugins", "rbxassetid://116361302503360")
 Plugins.Position = UDim2.new(0, 5, 0, 175)
 Plugins.Size = UDim2.new(1, -10, 0, 25)
 Plugins.Name = "Plugins"
@@ -681,7 +651,7 @@ CloseImage.BackgroundColor3 = Color3.new(1, 1, 1)
 CloseImage.BackgroundTransparency = 1
 CloseImage.Position = UDim2.new(0, 5, 0, 5)
 CloseImage.Size = UDim2.new(0, 10, 0, 10)
-CloseImage.Image = getcustomasset("infiniteyield/assets/close.png")
+CloseImage.Image = "rbxassetid://116396312853810"
 CloseImage.ZIndex = 10
 
 PinButton.Name = "PinButton"
@@ -697,7 +667,7 @@ PinImage.BackgroundTransparency = 1
 PinImage.Position = UDim2.new(0, 3, 0, 3)
 PinImage.Size = UDim2.new(0, 14, 0, 14)
 PinImage.ZIndex = 10
-PinImage.Image = getcustomasset("infiniteyield/assets/pin.png")
+PinImage.Image = "rbxassetid://84152083728286"
 
 Tooltip.Name = randomString()
 Tooltip.Parent = ScaledHolder
@@ -748,6 +718,7 @@ IntroBackground.BorderSizePixel = 0
 IntroBackground.Position = UDim2.new(0, 0, 0, 45)
 IntroBackground.Size = UDim2.new(0, 250, 0, 175)
 IntroBackground.ZIndex = 10
+table.insert(shade1,IntroBackground)
 
 Logo.Name = "Logo"
 Logo.Parent = Holder
@@ -755,7 +726,7 @@ Logo.BackgroundTransparency = 1
 Logo.BorderSizePixel = 0
 Logo.Position = UDim2.new(0, 125, 0, 127)
 Logo.Size = UDim2.new(0, 10, 0, 10)
-Logo.Image = getcustomasset("infiniteyield/assets/logo.png")
+Logo.Image = "rbxassetid://1352543873"
 Logo.ImageTransparency = 0
 Logo.ZIndex = 10
 
@@ -766,10 +737,11 @@ Credits.BorderSizePixel = 0
 Credits.Position = UDim2.new(0, 0, 0.9, 30)
 Credits.Size = UDim2.new(0, 250, 0, 20)
 Credits.Font = Enum.Font.SourceSansLight
-Credits.FontSize = Enum.FontSize.Size14
+Credits.TextSize = 15
 Credits.Text = "Edge // Zwolf // Moon // Toon // Peyton // ATP"
 Credits.TextColor3 = Color3.new(1, 1, 1)
 Credits.ZIndex = 10
+table.insert(text1,Credits)
 
 KeybindsFrame.Name = "KeybindsFrame"
 KeybindsFrame.Parent = Settings
@@ -1144,7 +1116,7 @@ ExitImage_2.BackgroundTransparency = 1
 ExitImage_2.Position = UDim2.new(0, 5, 0, 5)
 ExitImage_2.Size = UDim2.new(0, 10, 0, 10)
 ExitImage_2.ZIndex = 10
-ExitImage_2.Image = getcustomasset("infiniteyield/assets/close.png")
+ExitImage_2.Image = "rbxassetid://116396312853810"
 
 PositionsFrame.Name = "PositionsFrame"
 PositionsFrame.Parent = Settings
@@ -1484,7 +1456,7 @@ Img.Parent = background_3
 Img.BackgroundTransparency = 1
 Img.Position = UDim2.new(0, 242, 0, 3)
 Img.Size = UDim2.new(0, 100, 0, 95)
-Img.Image = getcustomasset("infiniteyield/assets/imgstudiopluginlogo.png")
+Img.Image = "rbxassetid://117598556369229"
 Img.ZIndex = 10
 
 AddPlugin.Name = "AddPlugin"
@@ -1578,7 +1550,7 @@ ExitImage_3.BackgroundColor3 = Color3.new(1, 1, 1)
 ExitImage_3.BackgroundTransparency = 1
 ExitImage_3.Position = UDim2.new(0, 5, 0, 5)
 ExitImage_3.Size = UDim2.new(0, 10, 0, 10)
-ExitImage_3.Image = getcustomasset("infiniteyield/assets/close.png")
+ExitImage_3.Image = "rbxassetid://116396312853810"
 ExitImage_3.ZIndex = 10
 
 AliasHint.Name = "AliasHint"
@@ -1736,7 +1708,7 @@ ExitImage_5.BackgroundColor3 = Color3.new(1, 1, 1)
 ExitImage_5.BackgroundTransparency = 1
 ExitImage_5.Position = UDim2.new(0, 5, 0, 5)
 ExitImage_5.Size = UDim2.new(0, 10, 0, 10)
-ExitImage_5.Image = getcustomasset("infiniteyield/assets/close.png")
+ExitImage_5.Image = "rbxassetid://116396312853810"
 ExitImage_5.ZIndex = 10
 
 logs.Name = randomString()
@@ -1769,7 +1741,7 @@ ImageLabel.BackgroundColor3 = Color3.new(1, 1, 1)
 ImageLabel.BackgroundTransparency = 1
 ImageLabel.Position = UDim2.new(0, 3, 0, 3)
 ImageLabel.Size = UDim2.new(0, 14, 0, 14)
-ImageLabel.Image = getcustomasset("infiniteyield/assets/minimize.png")
+ImageLabel.Image = "rbxassetid://95070996149109"
 ImageLabel.ZIndex = 10
 
 PopupText.Name = "PopupText"
@@ -1797,7 +1769,7 @@ ImageLabel_2.BackgroundColor3 = Color3.new(1, 1, 1)
 ImageLabel_2.BackgroundTransparency = 1
 ImageLabel_2.Position = UDim2.new(0, 5, 0, 5)
 ImageLabel_2.Size = UDim2.new(0, 10, 0, 10)
-ImageLabel_2.Image = getcustomasset("infiniteyield/assets/close.png")
+ImageLabel_2.Image = "rbxassetid://116396312853810"
 ImageLabel_2.ZIndex = 10
 
 background.Name = "background"
@@ -2107,7 +2079,7 @@ end
 
 function toClipboard(txt)
 	if everyClipboard then
-		everyClipboard(tostring(txt)) -- some executor errored without tostring btw so dont call me out for this
+		everyClipboard(tostring(txt)) -- some executor errored without tostring btw so dont call me out for this -- "finite dev", k got it
 		notify("Clipboard", "Copied to clipboard")
 	else
 		notify("Clipboard", "Your exploit doesn't have the ability to use the clipboard")
@@ -2296,7 +2268,7 @@ eventEditor = (function()
 		{2,"Frame",{BackgroundColor3=currentShade2,BorderSizePixel=0,Name="TopBar",Parent={1},Size=UDim2.new(1,0,0,20),ZIndex=10,}},
 		{3,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Title",Parent={2},Position=UDim2.new(0,0,0,0),Size=UDim2.new(1,0,0.95,0),Text="Event Editor",TextColor3=Color3.new(1,1,1),TextSize=14,TextXAlignment=Enum.TextXAlignment.Center,ZIndex=10,}},
 		{4,"TextButton",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Close",Parent={2},Position=UDim2.new(1,-20,0,0),Size=UDim2.new(0,20,0,20),Text="",TextColor3=Color3.new(1,1,1),TextSize=14,ZIndex=10,}},
-		{5,"ImageLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Image=getcustomasset("infiniteyield/assets/close.png"),Parent={4},Position=UDim2.new(0,5,0,5),Size=UDim2.new(0,10,0,10),ZIndex=10,}},
+		{5,"ImageLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Image="rbxassetid://116396312853810",Parent={4},Position=UDim2.new(0,5,0,5),Size=UDim2.new(0,10,0,10),ZIndex=10,}},
 		{6,"Frame",{BackgroundColor3=currentShade1,BorderSizePixel=0,Name="Content",Parent={1},Position=UDim2.new(0,0,0,20),Size=UDim2.new(1,0,0,202),ZIndex=10,}},
 		{7,"ScrollingFrame",{BackgroundColor3=Color3.new(0.14117647707462,0.14117647707462,0.14509804546833),BackgroundTransparency=1,BorderColor3=Color3.new(0.15686275064945,0.15686275064945,0.15686275064945),BorderSizePixel=0,BottomImage="rbxasset://textures/ui/Scroll/scroll-middle.png",CanvasSize=UDim2.new(0,0,0,100),Name="List",Parent={6},Position=UDim2.new(0,5,0,5),ScrollBarImageColor3=Color3.new(0.30588236451149,0.30588236451149,0.3098039329052),ScrollBarThickness=8,Size=UDim2.new(1,-10,1,-10),TopImage="rbxasset://textures/ui/Scroll/scroll-middle.png",ZIndex=10,}},
 		{8,"Frame",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Name="Holder",Parent={7},Size=UDim2.new(1,0,1,0),ZIndex=10,}},
@@ -2352,7 +2324,7 @@ eventEditor = (function()
 		{50,"TextBox",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,ClearTextOnFocus=false,Font=3,Parent={49},PlaceholderColor3=Color3.new(1,1,1),Position=UDim2.new(0,5,0,0),Size=UDim2.new(1,-45,0,20),Text="a\\b\\c\\d",TextColor3=currentText1,TextSize=14,TextXAlignment=0,ZIndex=10,}},
 		{51,"TextButton",{BackgroundColor3=currentShade1,BorderSizePixel=0,Font=3,Name="Delete",Parent={49},Position=UDim2.new(1,-20,0,0),Size=UDim2.new(0,20,0,20),Text="X",TextColor3=Color3.new(1,1,1),TextSize=18,ZIndex=10,}},
 		{52,"TextButton",{BackgroundColor3=currentShade1,BorderSizePixel=0,Font=3,Name="Settings",Parent={49},Position=UDim2.new(1,-40,0,0),Size=UDim2.new(0,20,0,20),Text="",TextColor3=Color3.new(1,1,1),TextSize=18,ZIndex=10,}},
-		{53,"ImageLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Image=getcustomasset("infiniteyield/assets/settings.png"),Parent={52},Position=UDim2.new(0,2,0,2),Size=UDim2.new(0,16,0,16),ZIndex=10,}},
+		{53,"ImageLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Image="rbxassetid://123222732420633",Parent={52},Position=UDim2.new(0,2,0,2),Size=UDim2.new(0,16,0,16),ZIndex=10,}},
 	})
 	main.Name = randomString()
 	local mainFrame = main:WaitForChild("Content")
@@ -2770,9 +2742,9 @@ reference = (function()
 		{2,"Frame",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,Name="TopBar",Parent={1},Size=UDim2.new(1,0,0,20),ZIndex=10,}},
 		{3,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Title",Parent={2},Size=UDim2.new(1,0,0.94999998807907,0),Text="Reference",TextColor3=Color3.new(1,1,1),TextSize=14,ZIndex=10,}},
 		{4,"TextButton",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Close",Parent={2},Position=UDim2.new(1,-20,0,0),Size=UDim2.new(0,20,0,20),Text="",TextColor3=Color3.new(1,1,1),TextSize=14,ZIndex=10,}},
-		{5,"ImageLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Image=getcustomasset("infiniteyield/assets/close.png"),Parent={4},Position=UDim2.new(0,5,0,5),Size=UDim2.new(0,10,0,10),ZIndex=10,}},
+		{5,"ImageLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Image="rbxassetid://116396312853810",Parent={4},Position=UDim2.new(0,5,0,5),Size=UDim2.new(0,10,0,10),ZIndex=10,}},
 		{6,"Frame",{BackgroundColor3=Color3.new(0.14117647707462,0.14117647707462,0.14509804546833),BorderSizePixel=0,Name="Content",Parent={1},Position=UDim2.new(0,0,0,20),Size=UDim2.new(1,0,0,300),ZIndex=10,}},
-		{7,"ScrollingFrame",{BackgroundColor3=Color3.new(0.14117647707462,0.14117647707462,0.14509804546833),BackgroundTransparency=1,BorderColor3=Color3.new(0.15686275064945,0.15686275064945,0.15686275064945),BorderSizePixel=0,BottomImage="rbxasset://textures/ui/Scroll/scroll-middle.png",CanvasSize=UDim2.new(0,0,0,1313),Name="List",Parent={6},ScrollBarImageColor3=Color3.new(0.30588236451149,0.30588236451149,0.3098039329052),ScrollBarThickness=8,Size=UDim2.new(1,0,1,0),TopImage="rbxasset://textures/ui/Scroll/scroll-middle.png",VerticalScrollBarInset=2,ZIndex=10,}},
+		{7,"ScrollingFrame",{BackgroundColor3=Color3.new(0.14117647707462,0.14117647707462,0.14509804546833),BackgroundTransparency=1,BorderColor3=Color3.new(0.15686275064945,0.15686275064945,0.15686275064945),BorderSizePixel=0,BottomImage="rbxasset://textures/ui/Scroll/scroll-middle.png",CanvasSize=UDim2.new(0,0,0,1423),Name="List",Parent={6},ScrollBarImageColor3=Color3.new(0.30588236451149,0.30588236451149,0.3098039329052),ScrollBarThickness=8,Size=UDim2.new(1,0,1,0),TopImage="rbxasset://textures/ui/Scroll/scroll-middle.png",VerticalScrollBarInset=2,ZIndex=10,}},
 		{8,"UIListLayout",{Parent={7},SortOrder=2,}},
 		{9,"Frame",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Name="Section",Parent={7},Size=UDim2.new(1,0,0,429),ZIndex=10,}},
 		{10,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=4,Name="Header",Parent={9},Position=UDim2.new(0,8,0,5),Size=UDim2.new(1,-8,0,20),Text="Special Player Cases",TextColor3=Color3.new(1,1,1),TextSize=20,TextXAlignment=0,ZIndex=10,}},
@@ -2849,6 +2821,12 @@ reference = (function()
 		{81,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Text",Parent={75},Position=UDim2.new(0,8,0,46),Size=UDim2.new(1,-8,0,16),Text=";locate noob,noob2,bob",TextColor3=Color3.new(1,1,1),TextSize=14,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
 		{82,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=4,Name="Text",Parent={75},Position=UDim2.new(0,8,0,120),Size=UDim2.new(1,-8,0,16),Text="Put ! before a command to run it with the last arguments it was ran with:",TextColor3=Color3.new(1,1,1),TextSize=14,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
 		{83,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Text",Parent={75},Position=UDim2.new(0,8,0,136),Size=UDim2.new(1,-8,0,32),Text="After running ;offset 0 100 0,  you can run !offset anytime to repeat that command with the same arguments that were used to run it last time",TextColor3=Color3.new(1,1,1),TextSize=14,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
+		{200,"Frame",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Name="Section",Parent={7},Size=UDim2.new(1,0,0,110),ZIndex=10,}},
+		{201,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=4,Name="Header",Parent={200},Position=UDim2.new(0,8,0,5),Size=UDim2.new(1,-8,0,20),Text="Using Quotes",TextColor3=Color3.new(1,1,1),TextSize=20,TextXAlignment=0,ZIndex=10,}},
+		{202,"Frame",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,Name="Line",Parent={200},Position=UDim2.new(0,10,1,-1),Size=UDim2.new(1,-20,0,1),ZIndex=10,}},
+		{203,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Text",Parent={200},Position=UDim2.new(0,8,0,30),Size=UDim2.new(1,-8,0,20),Text="Wrap text in double or single quotes to treat multiple words as a single argument",TextColor3=Color3.new(1,1,1),TextSize=14,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
+		{204,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=4,Name="Text",Parent={200},Position=UDim2.new(0,8,0,55),Size=UDim2.new(1,-8,0,16),Text="Examples:",TextColor3=Color3.new(1,1,1),TextSize=14,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
+		{205,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Text",Parent={200},Position=UDim2.new(0,8,0,73),Size=UDim2.new(1,-8,0,32),Text=";notify \"hello world\" \"this is the body\"\n;notify 'hello world' 'this is the body'",TextColor3=Color3.new(1,1,1),TextSize=14,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
 		{84,"Frame",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Name="Section",Parent={7},Size=UDim2.new(1,0,0,154),ZIndex=10,}},
 		{85,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=4,Name="Header",Parent={84},Position=UDim2.new(0,8,0,5),Size=UDim2.new(1,-8,0,20),Text="Command Looping",TextColor3=Color3.new(1,1,1),TextSize=20,TextXAlignment=0,ZIndex=10,}},
 		{86,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=4,Name="Text",Parent={84},Position=UDim2.new(0,8,0,30),Size=UDim2.new(1,-8,0,20),Text="Form: [How many times it loops]^[delay (optional)]^[command]",TextColor3=Color3.new(1,1,1),TextSize=15,TextWrapped=true,TextXAlignment=0,ZIndex=10,}},
@@ -2966,84 +2944,101 @@ end
 
 function createPopup(title, text)
 	local Popup = Instance.new("Frame")
-	local background = Instance.new("Frame")
-	local Directions = Instance.new("TextLabel")
-	local shadow = Instance.new("Frame")
-	local PopupText = Instance.new("TextLabel")
+	local UIScale_Popup = Instance.new("UIScale")
+	local TitleBar = Instance.new("Frame")
+	local TitleLabel = Instance.new("TextLabel")
 	local Exit = Instance.new("TextButton")
 	local ExitImage = Instance.new("ImageLabel")
+	local Body = Instance.new("Frame")
+	local Content = Instance.new("TextLabel")
 
 	Popup.Name = randomString()
 	Popup.Parent = ScaledHolder
 	Popup.Active = true
+	Popup.AnchorPoint = Vector2.new(0.5, 0.5)
 	Popup.BackgroundTransparency = 1
-	Popup.Position = UDim2.new(0.5, -180, 0, -500)
-	Popup.Size = UDim2.new(0, 360, 0, 20)
+	Popup.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Popup.Size = UDim2.new(0, 240, 0, 0)
+	Popup.AutomaticSize = Enum.AutomaticSize.Y
 	Popup.ZIndex = 10
 
-	background.Name = "background"
-	background.Parent = Popup
-	background.Active = true
-	background.BackgroundColor3 = Color3.fromRGB(36, 36, 37)
-	background.BorderSizePixel = 0
-	background.Position = UDim2.new(0, 0, 0, 20)
-	background.Size = UDim2.new(0, 360, 0, 205)
-	background.ZIndex = 10
+	UIScale_Popup.Parent = Popup
+	UIScale_Popup.Scale = 0
 
-	Directions.Name = "Directions"
-	Directions.Parent = background
-	Directions.BackgroundTransparency = 1
-	Directions.BorderSizePixel = 0
-	Directions.Position = UDim2.new(0, 10, 0, 10)
-	Directions.Size = UDim2.new(0, 340, 0, 185)
-	Directions.Font = Enum.Font.SourceSans
-	Directions.TextSize = 14
-	Directions.Text = text
-	Directions.TextColor3 = Color3.new(1, 1, 1)
-	Directions.TextWrapped = true
-	Directions.TextXAlignment = Enum.TextXAlignment.Left
-	Directions.TextYAlignment = Enum.TextYAlignment.Top
-	Directions.ZIndex = 10
+	TitleBar.Name = "TitleBar"
+	TitleBar.Parent = Popup
+	TitleBar.BackgroundColor3 = currentShade2 or Color3.fromRGB(46, 46, 47)
+	TitleBar.BorderSizePixel = 0
+	TitleBar.Size = UDim2.new(1, 0, 0, 30)
+	TitleBar.ZIndex = 10
+	table.insert(shade2, TitleBar)
 
-	shadow.Name = "shadow"
-	shadow.Parent = Popup
-	shadow.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
-	shadow.BorderSizePixel = 0
-	shadow.Size = UDim2.new(0, 360, 0, 20)
-	shadow.ZIndex = 10
-
-	PopupText.Name = "PopupText"
-	PopupText.Parent = shadow
-	PopupText.BackgroundTransparency = 1
-	PopupText.Size = UDim2.new(1, 0, 0.95, 0)
-	PopupText.ZIndex = 10
-	PopupText.Font = Enum.Font.SourceSans
-	PopupText.TextSize = 14
-	PopupText.Text = title
-	PopupText.TextColor3 = Color3.new(1, 1, 1)
-	PopupText.TextWrapped = true
+	TitleLabel.Name = "TitleLabel"
+	TitleLabel.Parent = TitleBar
+	TitleLabel.BackgroundTransparency = 1
+	TitleLabel.Position = UDim2.new(0, 10, 0, 0)
+	TitleLabel.Size = UDim2.new(1, -40, 1, 0)
+	TitleLabel.Font = Enum.Font.SourceSansBold
+	TitleLabel.TextSize = 16
+	TitleLabel.Text = title
+	TitleLabel.TextColor3 = currentText1 or Color3.new(1, 1, 1)
+	TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+	TitleLabel.TextTruncate = Enum.TextTruncate.AtEnd
+	TitleLabel.ZIndex = 10
+	table.insert(text1, TitleLabel)
 
 	Exit.Name = "Exit"
-	Exit.Parent = shadow
+	Exit.Parent = TitleBar
 	Exit.BackgroundTransparency = 1
-	Exit.Position = UDim2.new(1, -20, 0, 0)
-	Exit.Size = UDim2.new(0, 20, 0, 20)
+	Exit.Position = UDim2.new(1, -30, 0, 0)
+	Exit.Size = UDim2.new(0, 30, 0, 30)
 	Exit.Text = ""
 	Exit.ZIndex = 10
 
 	ExitImage.Parent = Exit
-	ExitImage.BackgroundColor3 = Color3.new(1, 1, 1)
 	ExitImage.BackgroundTransparency = 1
-	ExitImage.Position = UDim2.new(0, 5, 0, 5)
+	ExitImage.AnchorPoint = Vector2.new(0.5, 0.5)
+	ExitImage.Position = UDim2.new(0.5, 0, 0.5, 0)
 	ExitImage.Size = UDim2.new(0, 10, 0, 10)
-	ExitImage.Image = getcustomasset("infiniteyield/assets/close.png")
+	ExitImage.Image = "rbxassetid://116396312853810"
 	ExitImage.ZIndex = 10
 
-	Popup:TweenPosition(UDim2.new(0.5, -180, 0, 150), "InOut", "Quart", 0.5, true, nil)
+	Body.Name = "Body"
+	Body.Parent = Popup
+	Body.BackgroundColor3 = currentShade1 or Color3.fromRGB(36, 36, 37)
+	Body.BorderSizePixel = 0
+	Body.Position = UDim2.new(0, 0, 0, 30)
+	Body.Size = UDim2.new(1, 0, 0, 60)
+	Body.AutomaticSize = Enum.AutomaticSize.Y
+	Body.ClipsDescendants = true
+	Body.ZIndex = 10
+	table.insert(shade1, Body)
+
+	Content.Name = "Content"
+	Content.Parent = Body
+	Content.BackgroundTransparency = 1
+	Content.Position = UDim2.new(0, 10, 0, 10)
+	Content.Size = UDim2.new(1, -20, 0, 0)
+	Content.AutomaticSize = Enum.AutomaticSize.Y
+	Content.Font = Enum.Font.SourceSans
+	Content.TextSize = 15
+	Content.Text = text
+	Content.TextColor3 = currentText1 or Color3.new(1, 1, 1)
+	Content.TextWrapped = true
+	Content.TextXAlignment = Enum.TextXAlignment.Left
+	Content.TextYAlignment = Enum.TextYAlignment.Top
+	Content.ZIndex = 10
+	table.insert(text1, Content)
+
+	local padding = Instance.new("UIPadding")
+	padding.PaddingBottom = UDim.new(0, 10)
+	padding.Parent = Body
+
+	TweenService:Create(UIScale_Popup, TweenInfo.new(0.35, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {Scale = 1}):Play()
 
 	Exit.MouseButton1Click:Connect(function()
-		Popup:TweenPosition(UDim2.new(0.5, -180, 0, -500), "InOut", "Quart", 0.5, true, nil)
-		task.wait(0.6)
+		TweenService:Create(UIScale_Popup, TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.In), {Scale = 0}):Play()
+		task.wait(0.3)
 		Popup:Destroy()
 	end)
 end
@@ -4230,7 +4225,7 @@ end)
 
 PrefixBox:GetPropertyChangedSignal("Text"):Connect(function()
 	prefix = PrefixBox.Text
-	Cmdbar.PlaceholderText = "Command Bar ("..prefix..")"
+	Cmdbar.PlaceholderText = "Type a command ("..prefix..")"
 	updatesaves()
 end)
 
@@ -4509,14 +4504,14 @@ CMDs[#CMDs + 1] = {NAME = 'antilag / boostfps / lowgraphics', DESC = 'Lowers gam
 CMDs[#CMDs + 1] = {NAME = 'record / rec', DESC = 'Starts Roblox recorder'}
 CMDs[#CMDs + 1] = {NAME = 'screenshot / scrnshot', DESC = 'Takes a screenshot'}
 CMDs[#CMDs + 1] = {NAME = 'togglefullscreen / togglefs', DESC = 'Toggles fullscreen'}
-CMDs[#CMDs + 1] = {NAME = 'notify [text]', DESC = 'Sends you a notification with the provided text'}
+CMDs[#CMDs + 1] = {NAME = 'notify [title] [body]', DESC = 'Sends you a notification with the provided title and body'}
 CMDs[#CMDs + 1] = {NAME = 'lastcommand / lastcmd', DESC = 'Executes the previous command used'}
 CMDs[#CMDs + 1] = {NAME = 'notifyping / ping', DESC = 'Notify yourself your ping'}
-CMDs[#CMDs + 1] = {NAME = 'norender', DESC = 'Disable 3d Rendering to decrease the amount of CPU the client uses'}
+CMDs[#CMDs + 1] = {NAME = 'norender', DESC = 'Stops the game from rendering anything 3d (why would you do this) but decreases the amount of CPU the client uses'}
 CMDs[#CMDs + 1] = {NAME = 'render', DESC = 'Enable 3d Rendering'}
 CMDs[#CMDs + 1] = {NAME = 'use2022materials / 2022materials', DESC = 'Enables 2022 material textures'}
 CMDs[#CMDs + 1] = {NAME = 'unuse2022materials / un2022materials', DESC = 'Disables 2022 material textures'}
-CMDs[#CMDs + 1] = {NAME = 'alignmentkeys', DESC = 'Enables the left and right alignment keys (comma and period)'}
+CMDs[#CMDs + 1] = {NAME = 'alignmentkeys', DESC = 'Useful for obby games, enables the left and right alignment keys (comma and period)'}
 CMDs[#CMDs + 1] = {NAME = 'unalignmentkeys / noalignmentkeys', DESC = 'Disables the alignment keys'}
 CMDs[#CMDs + 1] = {NAME = 'ctrllock', DESC = 'Binds Shiftlock to LeftControl'}
 CMDs[#CMDs + 1] = {NAME = 'unctrllock', DESC = 'Re-binds Shiftlock to LeftShift'}
@@ -4889,6 +4884,8 @@ CMDs[#CMDs + 1] = {NAME = 'addplugin / plugin [name]', DESC = 'Add a plugin via 
 CMDs[#CMDs + 1] = {NAME = 'removeplugin / deleteplugin [name]', DESC = 'Remove a plugin via command'}
 CMDs[#CMDs + 1] = {NAME = 'reloadplugin [name]', DESC = 'Reloads a plugin'}
 CMDs[#CMDs + 1] = {NAME = 'addallplugins / loadallplugins', DESC = 'Adds all available plugins from the workspace folder'}
+CMDs[#CMDs + 1] = {NAME = '', DESC = ''}
+CMDs[#CMDs + 1] = {NAME = 'testpopup', DESC = 'Debug.'}
 -- wait()
 
 for i = 1, #CMDs do
@@ -5122,7 +5119,27 @@ function execCmd(cmdStr,speaker,store)
 				if chunks[1] and lastCmds[chunks[1]] then v = lastCmds[chunks[1]] end
 			end
 
-			local args = splitString(v,split)
+			local args = {}
+			local temp = v
+			while #temp > 0 do
+				temp = temp:match("^%s*(.-)%s*$")
+				if temp == "" then break end
+				local ch = temp:sub(1, 1)
+				if ch == '"' or ch == "'" then
+					local closing = temp:find(ch, 2, true)
+					if closing then
+						table.insert(args, temp:sub(2, closing - 1))
+						temp = temp:sub(closing + 1)
+					else
+						table.insert(args, temp:sub(2))
+						break
+					end
+				else
+					local word = temp:match("^(%S+)")
+					table.insert(args, word)
+					temp = temp:sub(#word + 1)
+				end
+			end
 			local cmdName = args[1]
 			local cmd = findCmd(cmdName)
 			if cmd then
@@ -5643,7 +5660,7 @@ Players.LocalPlayer.Chatted:Connect(function()
 	end
 end)
 
-Cmdbar.PlaceholderText = "Command Bar ("..prefix..")"
+Cmdbar.PlaceholderText = "Type a command ("..prefix..")"
 Cmdbar:GetPropertyChangedSignal("Text"):Connect(function()
 	if Cmdbar:IsFocused() then
 		IndexContents(Cmdbar.Text,true,true)
@@ -5660,9 +5677,18 @@ Cmdbar.FocusLost:Connect(function(enterpressed)
 	if tabComplete then tabComplete:Disconnect() end
 	wait()
 	if not Cmdbar:IsFocused() then
-		Cmdbar.Text = ""
-		IndexContents('',true,false,true)
-		if SettingsOpen == true then
+		local mousePos = UserInputService:GetMouseLocation()
+		local holderPos = Holder.AbsolutePosition
+		local holderSize = Holder.AbsoluteSize
+		local overHolder = mousePos.X >= holderPos.X and mousePos.X <= holderPos.X + holderSize.X
+			and mousePos.Y >= holderPos.Y and mousePos.Y <= holderPos.Y + holderSize.Y
+
+		if not overHolder then
+			Cmdbar.Text = ""
+			IndexContents('',true,false,true)
+		end
+
+		if SettingsOpen == true and not overHolder then
 			wait(0.2)
 			Settings:TweenPosition(UDim2.new(0, 0, 0, 45), "InOut", "Quart", 0.2, true, nil)
 			CMDsF.Visible = false
@@ -5700,96 +5726,136 @@ end
 
 function ESP(plr, logic)
 	task.spawn(function()
-		for i,v in pairs(COREGUI:GetChildren()) do
-			if v.Name == plr.Name..'_ESP' then
-				v:Destroy()
-			end
+		for _, v in COREGUI:GetChildren() do
+			if v.Name == plr.Name .. '_ESP' then v:Destroy() end
 		end
-		wait()
-		if plr.Character and plr.Name ~= Players.LocalPlayer.Name and not COREGUI:FindFirstChild(plr.Name..'_ESP') then
-			local ESPholder = Instance.new("Folder")
-			ESPholder.Name = plr.Name..'_ESP'
-			ESPholder.Parent = COREGUI
-			repeat wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
-			for b,n in pairs (plr.Character:GetChildren()) do
-				if (n:IsA("BasePart")) then
-					local a = Instance.new("BoxHandleAdornment")
-					a.Name = plr.Name
-					a.Parent = ESPholder
-					a.Adornee = n
-					a.AlwaysOnTop = true
-					a.ZIndex = 10
-					a.Size = n.Size
-					a.Transparency = espTransparency
-					if logic == true then
-						a.Color = BrickColor.new(plr.TeamColor == Players.LocalPlayer.TeamColor and "Bright green" or "Bright red")
-					else
-						a.Color = plr.TeamColor
-					end
+		task.wait()
+
+		if not plr.Character or plr.Name == Players.LocalPlayer.Name or COREGUI:FindFirstChild(plr.Name .. '_ESP') then return end
+
+		local ESPholder = Instance.new("Folder")
+		ESPholder.Name = plr.Name .. '_ESP'
+		ESPholder.Parent = COREGUI
+
+		repeat task.wait(1) until plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+
+		local espColor
+		if logic then
+			espColor = plr.TeamColor == Players.LocalPlayer.TeamColor and Color3.fromRGB(0, 255, 128) or Color3.fromRGB(255, 50, 50)
+		else
+			espColor = plr.TeamColor.Color
+		end
+
+		local highlight = Instance.new("Highlight")
+		highlight.Name = plr.Name
+		highlight.Parent = ESPholder
+		highlight.Adornee = plr.Character
+		highlight.FillColor = espColor
+		highlight.FillTransparency = 0.5
+		highlight.OutlineColor = espColor
+		highlight.OutlineTransparency = 0
+		highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+
+		if plr.Character and plr.Character:FindFirstChild('Head') then
+			local billboard = Instance.new("BillboardGui")
+			billboard.Name = plr.Name
+			billboard.Parent = ESPholder
+			billboard.Adornee = getRoot(plr.Character)
+			billboard.Size = UDim2.new(0, 200, 0, 50)
+			billboard.StudsOffset = Vector3.new(0, 3.5, 0)
+			billboard.AlwaysOnTop = true
+
+			local nameLabel = Instance.new("TextLabel")
+			nameLabel.Parent = billboard
+			nameLabel.BackgroundTransparency = 1
+			nameLabel.Size = UDim2.new(1, 0, 0, 16)
+			nameLabel.Position = UDim2.new(0, 0, 0, 0)
+			nameLabel.Font = Enum.Font.SourceSansBold
+			nameLabel.TextSize = 24
+			nameLabel.TextColor3 = espColor
+			nameLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
+			nameLabel.TextStrokeTransparency = 0.5
+			nameLabel.Text = plr.DisplayName
+
+			local infoLabel = Instance.new("TextLabel")
+			infoLabel.Parent = billboard
+			infoLabel.BackgroundTransparency = 1
+			infoLabel.Size = UDim2.new(1, 0, 0, 14)
+			infoLabel.Position = UDim2.new(0, 0, 0, 16)
+			infoLabel.Font = Enum.Font.SourceSans
+			infoLabel.TextSize = 20
+			infoLabel.TextColor3 = Color3.new(0.85, 0.85, 0.85)
+			infoLabel.TextStrokeColor3 = Color3.new(0, 0, 0)
+			infoLabel.TextStrokeTransparency = 0.5
+			infoLabel.Text = ""
+
+			local healthBarBG = Instance.new("Frame")
+			healthBarBG.Parent = billboard
+			healthBarBG.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+			healthBarBG.BorderSizePixel = 0
+			healthBarBG.Size = UDim2.new(0.6, 0, 0, 3)
+			healthBarBG.Position = UDim2.new(0.2, 0, 0, 33)
+
+			local healthBar = Instance.new("Frame")
+			healthBar.Parent = healthBarBG
+			healthBar.BackgroundColor3 = Color3.fromRGB(0, 255, 128)
+			healthBar.BorderSizePixel = 0
+			healthBar.Size = UDim2.new(1, 0, 1, 0)
+
+			local espLoopFunc, teamChange, addedFunc
+
+			addedFunc = plr.CharacterAdded:Connect(function()
+				if ESPenabled then
+					espLoopFunc:Disconnect()
+					teamChange:Disconnect()
+					ESPholder:Destroy()
+					repeat task.wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+					ESP(plr, logic)
+					addedFunc:Disconnect()
+				else
+					teamChange:Disconnect()
+					addedFunc:Disconnect()
 				end
-			end
-			if plr.Character and plr.Character:FindFirstChild('Head') then
-				local BillboardGui = Instance.new("BillboardGui")
-				local TextLabel = Instance.new("TextLabel")
-				BillboardGui.Adornee = plr.Character.Head
-				BillboardGui.Name = plr.Name
-				BillboardGui.Parent = ESPholder
-				BillboardGui.Size = UDim2.new(0, 100, 0, 150)
-				BillboardGui.StudsOffset = Vector3.new(0, 1, 0)
-				BillboardGui.AlwaysOnTop = true
-				TextLabel.Parent = BillboardGui
-				TextLabel.BackgroundTransparency = 1
-				TextLabel.Position = UDim2.new(0, 0, 0, -50)
-				TextLabel.Size = UDim2.new(0, 100, 0, 100)
-				TextLabel.Font = Enum.Font.SourceSansSemibold
-				TextLabel.TextSize = 20
-				TextLabel.TextColor3 = Color3.new(1, 1, 1)
-				TextLabel.TextStrokeTransparency = 0
-				TextLabel.TextYAlignment = Enum.TextYAlignment.Bottom
-				TextLabel.Text = 'Name: '..plr.Name
-				TextLabel.ZIndex = 10
-				local espLoopFunc
-				local teamChange
-				local addedFunc
-				addedFunc = plr.CharacterAdded:Connect(function()
-					if ESPenabled then
-						espLoopFunc:Disconnect()
-						teamChange:Disconnect()
-						ESPholder:Destroy()
-						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
-						ESP(plr, logic)
-						addedFunc:Disconnect()
-					else
-						teamChange:Disconnect()
-						addedFunc:Disconnect()
-					end
-				end)
-				teamChange = plr:GetPropertyChangedSignal("TeamColor"):Connect(function()
-					if ESPenabled then
-						espLoopFunc:Disconnect()
-						addedFunc:Disconnect()
-						ESPholder:Destroy()
-						repeat wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
-						ESP(plr, logic)
-						teamChange:Disconnect()
-					else
-						teamChange:Disconnect()
-					end
-				end)
-				local function espLoop()
-					if COREGUI:FindFirstChild(plr.Name..'_ESP') then
-						if plr.Character and getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid") and Players.LocalPlayer.Character and getRoot(Players.LocalPlayer.Character) and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
-							local pos = math.floor((getRoot(Players.LocalPlayer.Character).Position - getRoot(plr.Character).Position).magnitude)
-							TextLabel.Text = 'Name: '..plr.Name..' | Health: '..round(plr.Character:FindFirstChildOfClass('Humanoid').Health, 1)..' | Studs: '..pos
-						end
-					else
-						teamChange:Disconnect()
-						addedFunc:Disconnect()
-						espLoopFunc:Disconnect()
-					end
+			end)
+
+			teamChange = plr:GetPropertyChangedSignal("TeamColor"):Connect(function()
+				if ESPenabled then
+					espLoopFunc:Disconnect()
+					addedFunc:Disconnect()
+					ESPholder:Destroy()
+					repeat task.wait(1) until getRoot(plr.Character) and plr.Character:FindFirstChildOfClass("Humanoid")
+					ESP(plr, logic)
+					teamChange:Disconnect()
+				else
+					teamChange:Disconnect()
 				end
-				espLoopFunc = RunService.RenderStepped:Connect(espLoop)
-			end
+			end)
+
+			espLoopFunc = RunService.RenderStepped:Connect(function()
+				if not COREGUI:FindFirstChild(plr.Name .. '_ESP') then
+					teamChange:Disconnect()
+					addedFunc:Disconnect()
+					espLoopFunc:Disconnect()
+					return
+				end
+
+				local char = plr.Character
+				local myChar = Players.LocalPlayer.Character
+				if not char or not getRoot(char) or not char:FindFirstChildOfClass("Humanoid") then return end
+				if not myChar or not getRoot(myChar) then return end
+
+				local hum = char:FindFirstChildOfClass("Humanoid")
+				local dist = math.floor((getRoot(myChar).Position - getRoot(char).Position).Magnitude)
+				local healthPct = hum.Health / hum.MaxHealth
+
+				infoLabel.Text = dist .. "m | " .. math.floor(hum.Health) .. "hp"
+				healthBar.Size = UDim2.new(math.clamp(healthPct, 0, 1), 0, 1, 0)
+				healthBar.BackgroundColor3 = Color3.fromRGB(
+					255 * (1 - healthPct),
+					255 * healthPct,
+					50
+				)
+			end)
 		end
 	end)
 end
@@ -6648,7 +6714,7 @@ addcmd('serverinfo',{'info','sinfo'},function(args, speaker)
 		ExitImage.BackgroundTransparency = 1
 		ExitImage.Position = UDim2.new(0, 5, 0, 5)
 		ExitImage.Size = UDim2.new(0, 10, 0, 10)
-		ExitImage.Image = getcustomasset("infiniteyield/assets/close.png")
+		ExitImage.Image = "rbxassetid://116396312853810"
 		ExitImage.ZIndex = 10
 
 		background.Name = "background"
@@ -6912,6 +6978,10 @@ addcmd("jobid", {}, function(args, speaker)
 	toClipboard("roblox://placeId=" .. PlaceId .. "&gameInstanceId=" .. JobId)
 end)
 
+addcmd('testpopup', {}, function(args, speaker)
+	createPopup("test", "body")
+end)
+
 addcmd('notifyjobid',{},function(args, speaker)
 	notify('JobId / PlaceId',JobId..' / '..PlaceId)
 end)
@@ -6926,7 +6996,7 @@ end)
 
 addcmd("rejoin", {"rj"}, function(args, speaker)
 	if #Players:GetPlayers() <= 1 then
-		Players.LocalPlayer:Kick("\nRejoining...")
+		createPopup("Rejoining game", "Rejoining...")
 		wait()
 		TeleportService:Teleport(PlaceId, Players.LocalPlayer)
 	else
@@ -7995,7 +8065,7 @@ addcmd("setfpscap", {"fpscap", "maxfps"}, function(args, speaker)
 end)
 
 addcmd('notify',{},function(args, speaker)
-	notify(getstring(1, args))
+	notify(args[1] or "", args[2] or "")
 end)
 
 addcmd('lastcommand',{'lastcmd'},function(args, speaker)
@@ -12968,7 +13038,7 @@ if IsOnMobile then
 	QuickCapture.Position = UDim2.new(0.489, 0, 0, 0)
 	QuickCapture.Size = UDim2.new(0, 32, 0, 33)
 	QuickCapture.Font = Enum.Font.SourceSansBold
-	QuickCapture.Text = "IY"
+	QuickCapture.Text = "FY"
 	QuickCapture.TextColor3 = Color3.fromRGB(255, 255, 255)
 	QuickCapture.TextSize = 20
 	QuickCapture.TextWrapped = true
@@ -13148,107 +13218,11 @@ CaptureService.CaptureEnded:Connect(function()
 end)
 
 task.spawn(function()
-	local success, latestVersionInfo = pcall(function() 
-		local versionJson = game:HttpGet("https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/version")
-		return HttpService:JSONDecode(versionJson)
-	end)
-
-	if success then
-		if currentVersion ~= latestVersionInfo.Version then
-			notify("Outdated", "Get the new version at infyiff.github.io")
-		end
-
-		if latestVersionInfo.Announcement and latestVersionInfo.Announcement ~= "" then
-			local AnnGUI = Instance.new("Frame")
-			local background = Instance.new("Frame")
-			local TextBox = Instance.new("TextLabel")
-			local shadow = Instance.new("Frame")
-			local PopupText = Instance.new("TextLabel")
-			local Exit = Instance.new("TextButton")
-			local ExitImage = Instance.new("ImageLabel")
-
-			AnnGUI.Name = randomString()
-			AnnGUI.Parent = ScaledHolder
-			AnnGUI.Active = true
-			AnnGUI.BackgroundTransparency = 1
-			AnnGUI.Position = UDim2.new(0.5, -180, 0, -500)
-			AnnGUI.Size = UDim2.new(0, 360, 0, 20)
-			AnnGUI.ZIndex = 10
-
-			background.Name = "background"
-			background.Parent = AnnGUI
-			background.Active = true
-			background.BackgroundColor3 = currentShade1
-			background.BorderSizePixel = 0
-			background.Position = UDim2.new(0, 0, 0, 20)
-			background.Size = UDim2.new(0, 360, 0, 150)
-			background.ZIndex = 10
-
-			TextBox.Parent = background
-			TextBox.BackgroundTransparency = 1
-			TextBox.Position = UDim2.new(0, 5, 0, 5)
-			TextBox.Size = UDim2.new(0, 350, 0, 140)
-			TextBox.Font = Enum.Font.SourceSans
-			TextBox.TextSize = 18
-			TextBox.TextWrapped = true
-			TextBox.Text = latestVersionInfo.Announcement
-			TextBox.TextColor3 = currentText1
-			TextBox.TextXAlignment = Enum.TextXAlignment.Left
-			TextBox.TextYAlignment = Enum.TextYAlignment.Top
-			TextBox.ZIndex = 10
-
-			shadow.Name = "shadow"
-			shadow.Parent = AnnGUI
-			shadow.BackgroundColor3 = currentShade2
-			shadow.BorderSizePixel = 0
-			shadow.Size = UDim2.new(0, 360, 0, 20)
-			shadow.ZIndex = 10
-
-			PopupText.Name = "PopupText"
-			PopupText.Parent = shadow
-			PopupText.BackgroundTransparency = 1
-			PopupText.Size = UDim2.new(1, 0, 0.95, 0)
-			PopupText.ZIndex = 10
-			PopupText.Font = Enum.Font.SourceSans
-			PopupText.TextSize = 14
-			PopupText.Text = "Server Announcement"
-			PopupText.TextColor3 = currentText1
-			PopupText.TextWrapped = true
-
-			Exit.Name = "Exit"
-			Exit.Parent = shadow
-			Exit.BackgroundTransparency = 1
-			Exit.Position = UDim2.new(1, -20, 0, 0)
-			Exit.Size = UDim2.new(0, 20, 0, 20)
-			Exit.Text = ""
-			Exit.ZIndex = 10
-
-			ExitImage.Parent = Exit
-			ExitImage.BackgroundColor3 = Color3.new(1, 1, 1)
-			ExitImage.BackgroundTransparency = 1
-			ExitImage.Position = UDim2.new(0, 5, 0, 5)
-			ExitImage.Size = UDim2.new(0, 10, 0, 10)
-			ExitImage.Image = getcustomasset("infiniteyield/assets/close.png")
-			ExitImage.ZIndex = 10
-
-			task.wait(1)
-			AnnGUI:TweenPosition(UDim2.new(0.5, -180, 0, 150), "InOut", "Quart", 0.5, true, nil)
-
-			Exit.MouseButton1Click:Connect(function()
-				AnnGUI:TweenPosition(UDim2.new(0.5, -180, 0, -500), "InOut", "Quart", 0.5, true, nil)
-				task.wait(0.6)
-				AnnGUI:Destroy()
-			end)
-		end
-	end
-end)
-
-task.spawn(function()
     task.wait()
     pcall(function()
         Credits:TweenPosition(UDim2.new(0, 0, 0.9, 0), "Out", "Quart", 0.2)
         Logo:TweenSizeAndPosition(UDim2.new(0, 175, 0, 175), UDim2.new(0, 37, 0, 45), "Out", "Quart", 0.3)
-        task.wait(1)
+        task.wait(1.05)
         local OutInfo = TweenInfo.new(1.6809, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, 0, false, 0)
         TweenService:Create(Logo, OutInfo, {ImageTransparency = 1}):Play()
         TweenService:Create(IntroBackground, OutInfo, {BackgroundTransparency = 1}):Play()
