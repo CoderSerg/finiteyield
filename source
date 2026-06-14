@@ -1,5 +1,4 @@
 -- Full credit goes to Infinite Yield, this just builds on top of it
-
 if IY_LOADED and not _G.IY_DEBUG then
 	notify("Finite Yield", "Tried to load twice or more without debug, ignoring")
 	return
@@ -123,8 +122,8 @@ end)) or false]]
 --	["infiniteyield/assets/reference.png"] = "rbxassetid://3523243755",
 --	["infiniteyield/assets/settings.png"] = "rbxassetid://1204397029"
 --}
-
-currentVersion = "1.1.4"
+--CURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSION
+currentVersion = "1.2.6"
 
 ScaledHolder = Instance.new("Frame")
 Scale = Instance.new("UIScale")
@@ -147,7 +146,9 @@ Positions = Instance.new("TextLabel")
 EventBind = Instance.new("TextLabel")
 Plugins = Instance.new("TextLabel")
 Example = Instance.new("TextButton")
-Notification = Instance.new("Frame")
+Notification = Instance.new("CanvasGroup")
+PinIcon = Instance.new("ImageLabel")
+CloseIcon = Instance.new("ImageLabel")
 Title_2 = Instance.new("TextLabel")
 Text_2 = Instance.new("TextLabel")
 CloseButton = Instance.new("TextButton")
@@ -161,6 +162,12 @@ IntroBackground = Instance.new("Frame")
 Logo = Instance.new("ImageLabel")
 Credits = Instance.new("TextBox")
 KeybindsFrame = Instance.new("Frame")
+ThemePresetsFrame = Instance.new("Frame")
+ThemeHolder = Instance.new("ScrollingFrame")
+ThemeExample = Instance.new("Frame")
+Text_7 = Instance.new("TextButton")
+Close_5 = Instance.new("TextButton")
+ThemeUIList = Instance.new("UIListLayout")
 Close = Instance.new("TextButton")
 Add = Instance.new("TextButton")
 Delete = Instance.new("TextButton")
@@ -259,6 +266,7 @@ scroll_3 = Instance.new("ScrollingFrame")
 listlayout = Instance.new("UIListLayout",scroll_3)
 selectChat = Instance.new("TextButton")
 selectJoin = Instance.new("TextButton")
+local timerLoop
 
 function randomString()
 	local length = math.random(10,20)
@@ -443,7 +451,7 @@ SettingsHolder.BorderSizePixel = 0
 SettingsHolder.Size = UDim2.new(1,0,1,0)
 SettingsHolder.ScrollBarImageColor3 = Color3.fromRGB(78,78,79)
 SettingsHolder.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
-SettingsHolder.CanvasSize = UDim2.new(0, 0, 0, 235)
+SettingsHolder.CanvasSize = UDim2.new(0, 0, 0, 265)
 SettingsHolder.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
 SettingsHolder.ScrollBarThickness = 8
 SettingsHolder.TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
@@ -525,14 +533,98 @@ ColorsButton.Size = UDim2.new(1, -10, 0, 25)
 ColorsButton.Name = "Colors"
 ColorsButton.Parent = SettingsHolder
 
+ThemePresets = makeSettingsButton("Theme presets", "rbxassetid://113234034461805")
+ThemePresets.Position = UDim2.new(0, 5, 0, 85)
+ThemePresets.Size = UDim2.new(1, -10, 0, 25)
+ThemePresets.Name = "ThemePresets"
+ThemePresets.Parent = SettingsHolder
+
+ThemePresetsFrame.Name = "ThemePresetsFrame"
+ThemePresetsFrame.Parent = Settings
+ThemePresetsFrame.Active = true
+ThemePresetsFrame.BackgroundColor3 = currentShade1 or Color3.fromRGB(36, 36, 37)
+ThemePresetsFrame.BorderSizePixel = 0
+ThemePresetsFrame.Size = UDim2.new(0, 250, 0, 175)
+ThemePresetsFrame.Position = UDim2.new(0, 0, 0, 175)
+ThemePresetsFrame.ZIndex = 10
+table.insert(shade1, ThemePresetsFrame)
+
+ThemeHolder.Name = "Holder"
+ThemeHolder.Parent = ThemePresetsFrame
+ThemeHolder.BackgroundTransparency = 1
+ThemeHolder.BorderSizePixel = 0
+ThemeHolder.Position = UDim2.new(0, 0, 0, 0)
+ThemeHolder.Selectable = false
+ThemeHolder.Size = UDim2.new(0, 250, 0, 145)
+ThemeHolder.ScrollBarImageColor3 = currentScroll or Color3.fromRGB(78, 78, 79)
+ThemeHolder.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
+ThemeHolder.CanvasSize = UDim2.new(0, 0, 0, 0)
+ThemeHolder.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
+ThemeHolder.ScrollBarThickness = 0
+ThemeHolder.TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
+ThemeHolder.VerticalScrollBarInset = Enum.ScrollBarInset.Always
+ThemeHolder.ZIndex = 10
+table.insert(scroll, ThemeHolder)
+
+local ThemeHolderPadding = Instance.new("UIPadding")
+ThemeHolderPadding.Parent = ThemeHolder
+ThemeHolderPadding.PaddingTop = UDim.new(0, 8)
+ThemeHolderPadding.PaddingBottom = UDim.new(0, 8)
+ThemeHolderPadding.PaddingLeft = UDim.new(0, 8)
+ThemeHolderPadding.PaddingRight = UDim.new(0, 8)
+
+ThemeUIList.Parent = ThemeHolder
+ThemeUIList.SortOrder = Enum.SortOrder.LayoutOrder
+ThemeUIList.Padding = UDim.new(0, 4)
+
+ThemeExample.Name = "Example"
+ThemeExample.Parent = ThemePresetsFrame
+ThemeExample.BackgroundColor3 = currentShade2 or Color3.fromRGB(46, 46, 47)
+ThemeExample.BorderSizePixel = 0
+ThemeExample.Size = UDim2.new(1, 0, 0, 20)
+ThemeExample.Visible = false
+ThemeExample.Position = UDim2.new(0, 0, 0, -5)
+ThemeExample.ZIndex = 10
+table.insert(shade2, ThemeExample)
+
+Text_7.Name = "Text"
+Text_7.Parent = ThemeExample
+Text_7.BackgroundColor3 = currentShade2 or Color3.fromRGB(46, 46, 47)
+Text_7.BorderSizePixel = 0
+Text_7.Position = UDim2.new(0, 10, 0, 0)
+Text_7.Size = UDim2.new(1, -10, 0, 20)
+Text_7.Font = Enum.Font.SourceSans
+Text_7.TextSize = 14
+Text_7.Text = "Theme"
+Text_7.AutoButtonColor = false
+Text_7.TextColor3 = currentText1 or Color3.new(1, 1, 1)
+Text_7.TextXAlignment = Enum.TextXAlignment.Left
+Text_7.ZIndex = 10
+table.insert(shade2, Text_7)
+table.insert(text1, Text_7)
+
+Close_5.Name = "Close"
+Close_5.Parent = ThemePresetsFrame
+Close_5.BackgroundColor3 = currentShade2 or Color3.fromRGB(46, 46, 47)
+Close_5.BorderSizePixel = 0
+Close_5.Position = UDim2.new(0, 205, 0, 150)
+Close_5.Size = UDim2.new(0, 40, 0, 20)
+Close_5.Font = Enum.Font.SourceSans
+Close_5.TextSize = 14
+Close_5.Text = "Close"
+Close_5.TextColor3 = currentText1 or Color3.new(1, 1, 1)
+Close_5.ZIndex = 10
+table.insert(shade2, Close_5)
+table.insert(text1, Close_5)
+
 Keybinds = makeSettingsButton("Rebind keys","rbxassetid://121978468376124")
-Keybinds.Position = UDim2.new(0, 5, 0, 85)
+Keybinds.Position = UDim2.new(0, 5, 0, 115)
 Keybinds.Size = UDim2.new(1, -10, 0, 25)
 Keybinds.Name = "Keybinds"
 Keybinds.Parent = SettingsHolder
 
 Aliases = makeSettingsButton("Change aliases","rbxassetid://107047557421203")
-Aliases.Position = UDim2.new(0, 5, 0, 115)
+Aliases.Position = UDim2.new(0, 5, 0, 145)
 Aliases.Size = UDim2.new(1, -10, 0, 25)
 Aliases.Name = "Aliases"
 Aliases.Parent = SettingsHolder
@@ -571,19 +663,19 @@ On.Text = ""
 On.ZIndex = 10
 
 Positions = makeSettingsButton("Manage waypoints", "rbxassetid://137091405832737")
-Positions.Position = UDim2.new(0, 5, 0, 145)
+Positions.Position = UDim2.new(0, 5, 0, 175)
 Positions.Size = UDim2.new(1, -10, 0, 25)
 Positions.Name = "Waypoints"
 Positions.Parent = SettingsHolder
 
 EventBind = makeSettingsButton("Change event binds", "rbxassetid://82061714010896")
-EventBind.Position = UDim2.new(0, 5, 0, 205)
+EventBind.Position = UDim2.new(0, 5, 0, 235)
 EventBind.Size = UDim2.new(1, -10, 0, 25)
 EventBind.Name = "EventBinds"
 EventBind.Parent = SettingsHolder
 
 Plugins = makeSettingsButton("Manage plugins", "rbxassetid://116361302503360")
-Plugins.Position = UDim2.new(0, 5, 0, 175)
+Plugins.Position = UDim2.new(0, 5, 0, 205)
 Plugins.Size = UDim2.new(1, -10, 0, 25)
 Plugins.Name = "Plugins"
 Plugins.Parent = SettingsHolder
@@ -602,72 +694,117 @@ Example.TextXAlignment = Enum.TextXAlignment.Left
 Example.ZIndex = 10
 table.insert(text1,Example)
 
-Notification.Name = randomString()
-Notification.Parent = ScaledHolder
-Notification.BackgroundColor3 = Color3.fromRGB(36, 36, 37)
+Notification.Name = "Notification"
+Notification.Parent = PARENT
+Notification.BackgroundColor3 = currentShade1 or Color3.fromRGB(36, 36, 37)
 Notification.BorderSizePixel = 0
-Notification.Position = UDim2.new(1, -500, 1, 20)
-Notification.Size = UDim2.new(0, 250, 0, 100)
+Notification.AnchorPoint = Vector2.new(1, 1)
+Notification.Position = UDim2.new(1, -275, 1, 100)
+Notification.Size = UDim2.new(0, 260, 0, 80)
+Notification.AutomaticSize = Enum.AutomaticSize.None
+Notification.ClipsDescendants = true
 Notification.ZIndex = 10
-table.insert(shade1,Notification)
+table.insert(shade1, Notification)
+
+local NotifyCorner = Instance.new("UICorner")
+NotifyCorner.CornerRadius = UDim.new(0, 8)
+NotifyCorner.Parent = Notification
+
+local NotifyStroke = Instance.new("UIStroke")
+NotifyStroke.Parent = Notification
+NotifyStroke.Color = currentShade3 or Color3.fromRGB(78, 78, 79)
+NotifyStroke.Thickness = 1
+NotifyStroke.Transparency = 0.5
+
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Parent = Notification
+TopBar.BackgroundTransparency = 1
+TopBar.Size = UDim2.new(1, 0, 0, 30)
+TopBar.ZIndex = 10
+
+local TimerLabel = Instance.new("TextLabel")
+TimerLabel.Name = "Timer"
+TimerLabel.Parent = TopBar
+TimerLabel.BackgroundTransparency = 1
+TimerLabel.AnchorPoint = Vector2.new(1, 0)
+TimerLabel.Position = UDim2.new(1, -49, 0, -1.5)
+TimerLabel.Size = UDim2.new(0, 40, 0, 30)
+TimerLabel.Font = Enum.Font.SourceSans
+TimerLabel.TextSize = 13
+TimerLabel.TextColor3 = currentShade3 or Color3.fromRGB(78, 78, 79)
+TimerLabel.Text = ""
+TimerLabel.ZIndex = 10
 
 Title_2.Name = "Title"
-Title_2.Parent = Notification
-Title_2.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
-Title_2.BorderSizePixel = 0
-Title_2.Size = UDim2.new(0, 250, 0, 20)
-Title_2.Font = Enum.Font.SourceSans
-Title_2.TextSize = 14
-Title_2.Text = "Notification Title"
-Title_2.TextColor3 = Color3.new(1, 1, 1)
+Title_2.Parent = TopBar
+Title_2.BackgroundTransparency = 1
+Title_2.Position = UDim2.new(0, 12, 0, 0)
+Title_2.Size = UDim2.new(1, -64, 1, 0)
+Title_2.Font = Enum.Font.SourceSansBold
+Title_2.TextSize = 15
+Title_2.Text = "Notification"
+Title_2.TextColor3 = currentText1 or Color3.new(1, 1, 1)
+Title_2.TextXAlignment = Enum.TextXAlignment.Left
+Title_2.TextTruncate = Enum.TextTruncate.AtEnd
 Title_2.ZIndex = 10
-table.insert(shade2,Title_2)
-table.insert(text1,Title_2)
+table.insert(text1, Title_2)
 
-Text_2.Name = "Text"
-Text_2.Parent = Notification
-Text_2.BackgroundTransparency = 1
-Text_2.BorderSizePixel = 0
-Text_2.Position = UDim2.new(0, 5, 0, 25)
-Text_2.Size = UDim2.new(0, 240, 0, 75)
-Text_2.Font = Enum.Font.SourceSans
-Text_2.TextSize = 16
-Text_2.Text = "Notification Text"
-Text_2.TextColor3 = Color3.new(1, 1, 1)
-Text_2.TextWrapped = true
-Text_2.ZIndex = 10
-table.insert(text1,Text_2)
+PinButton.Name = "Pin"
+PinButton.Parent = TopBar
+PinButton.BackgroundTransparency = 1
+PinButton.Position = UDim2.new(1, -52, 0, 0)
+PinButton.Size = UDim2.new(0, 26, 0, 30)
+PinButton.Text = ""
+PinButton.ZIndex = 10
 
-CloseButton.Name = "CloseButton"
-CloseButton.Parent = Notification
+PinIcon.Name = "PinIcon"
+PinIcon.Parent = PinButton
+PinIcon.BackgroundTransparency = 1
+PinIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+PinIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+PinIcon.Size = UDim2.new(0, 14, 0, 14)
+PinIcon.Image = "rbxassetid://79775551915820"
+PinIcon.ZIndex = 10
+
+CloseButton.Name = "Close"
+CloseButton.Parent = TopBar
 CloseButton.BackgroundTransparency = 1
-CloseButton.Position = UDim2.new(1, -20, 0, 0)
-CloseButton.Size = UDim2.new(0, 20, 0, 20)
+CloseButton.Position = UDim2.new(1, -26, 0, 0)
+CloseButton.Size = UDim2.new(0, 26, 0, 30)
 CloseButton.Text = ""
 CloseButton.ZIndex = 10
 
-CloseImage.Parent = CloseButton
-CloseImage.BackgroundColor3 = Color3.new(1, 1, 1)
-CloseImage.BackgroundTransparency = 1
-CloseImage.Position = UDim2.new(0, 5, 0, 5)
-CloseImage.Size = UDim2.new(0, 10, 0, 10)
-CloseImage.Image = "rbxassetid://116396312853810"
-CloseImage.ZIndex = 10
+CloseIcon.Name = "CloseIcon"
+CloseIcon.Parent = CloseButton
+CloseIcon.BackgroundTransparency = 1
+CloseIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+CloseIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+CloseIcon.Size = UDim2.new(0, 14, 0, 14)
+CloseIcon.Image = "rbxassetid://116396312853810"
+CloseIcon.ZIndex = 10
 
-PinButton.Name = "PinButton"
-PinButton.Parent = Notification
-PinButton.BackgroundTransparency = 1
-PinButton.Size = UDim2.new(0, 20, 0, 20)
-PinButton.ZIndex = 10
-PinButton.Text = ""
+Text_2.Name = "Body"
+Text_2.Parent = Notification
+Text_2.BackgroundTransparency = 1
+Text_2.Position = UDim2.new(0, 12, 0, 24)
+Text_2.Size = UDim2.new(1, -24, 0, 0)
+Text_2.AutomaticSize = Enum.AutomaticSize.Y
+Text_2.Font = Enum.Font.SourceSans
+Text_2.TextSize = 14
+Text_2.Text = ""
+Text_2.TextColor3 = currentText1 or Color3.new(1, 1, 1)
+Text_2.TextWrapped = true
+Text_2.TextXAlignment = Enum.TextXAlignment.Left
+Text_2.TextYAlignment = Enum.TextYAlignment.Top
+Text_2.ZIndex = 10
+table.insert(text1, Text_2)
 
-PinImage.Parent = PinButton
-PinImage.BackgroundColor3 = Color3.new(1, 1, 1)
-PinImage.BackgroundTransparency = 1
-PinImage.Position = UDim2.new(0, 3, 0, 3)
-PinImage.Size = UDim2.new(0, 14, 0, 14)
-PinImage.ZIndex = 10
-PinImage.Image = "rbxassetid://84152083728286"
+local Spacer = Instance.new("Frame")
+Spacer.Parent = Notification
+Spacer.BackgroundTransparency = 1
+Spacer.Size = UDim2.new(1, 0, 0, 14)
+Spacer.LayoutOrder = 999
 
 Tooltip.Name = randomString()
 Tooltip.Parent = ScaledHolder
@@ -3224,46 +3361,82 @@ end
 
 pinNotification = nil
 local notifyCount = 0
-function notify(text,text2,length)
+function notify(text, text2, length)
 	task.spawn(function()
-		local LnotifyCount = notifyCount+1
+		local LnotifyCount = notifyCount + 1
 		local notificationPinned = false
-		notifyCount = notifyCount+1
+		notifyCount = notifyCount + 1
+
 		if pinNotification then pinNotification:Disconnect() end
+		if closeNotification then closeNotification:Disconnect() end
+		if timerLoop then timerLoop:Disconnect() end
+
+		PinIcon.Image = "rbxassetid://79775551915820"
+		TimerLabel.Text = ""
+
 		pinNotification = PinButton.MouseButton1Click:Connect(function()
-			task.spawn(function()
-				pinNotification:Disconnect()
-				notificationPinned = true
-				Title_2.BackgroundTransparency = 1
-				wait(0.5)
-				Title_2.BackgroundTransparency = 0
-			end)
+			notificationPinned = not notificationPinned
+			PinIcon.Image = notificationPinned and "rbxassetid://84152083728286" or "rbxassetid://79775551915820"
 		end)
-		Notification:TweenPosition(UDim2.new(1, Notification.Position.X.Offset, 1, 0), "InOut", "Quart", 0.5, true, nil)
-		wait(0.6)
-		local closepressed = false
+
+		TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+			Position = UDim2.new(1, -275, 1, 100)
+		}):Play()
+		task.wait(0.35)
+
 		if text2 then
 			Title_2.Text = text
 			Text_2.Text = text2
 		else
-			Title_2.Text = 'Notification'
+			Title_2.Text = "Notification"
 			Text_2.Text = text
 		end
-		Notification:TweenPosition(UDim2.new(1, Notification.Position.X.Offset, 1, -100), "InOut", "Quart", 0.5, true, nil)
-		CloseButton.MouseButton1Click:Connect(function()
-			Notification:TweenPosition(UDim2.new(1, Notification.Position.X.Offset, 1, 0), "InOut", "Quart", 0.5, true, nil)
+
+		local closepressed = false
+
+		closeNotification = CloseButton.MouseButton1Click:Connect(function()
 			closepressed = true
-			pinNotification:Disconnect()
+			if pinNotification then pinNotification:Disconnect() end
+			if timerLoop then timerLoop:Disconnect() end
+			TimerLabel.Text = ""
+			TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+				Position = UDim2.new(1, -275, 1, 100)
+			}):Play()
 		end)
-		if length and isNumber(length) then
-			wait(length)
-		else
-			wait(10)
-		end
+
+		TweenService:Create(Notification, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+			Position = UDim2.new(1, -275, 1, -12)
+		}):Play()
+
+		local duration = (length and isNumber(length)) and length or 5
+		local remaining = duration
+
+		timerLoop = RunService.RenderStepped:Connect(function(dt)
+			if closepressed or LnotifyCount ~= notifyCount then
+				timerLoop:Disconnect()
+				TimerLabel.Text = ""
+				return
+			end
+			if notificationPinned then return end
+			remaining = remaining - dt
+			if remaining <= 0 then
+				TimerLabel.Text = ""
+				timerLoop:Disconnect()
+				return
+			end
+			TimerLabel.Text = string.format("%.1f", remaining)
+		end)
+
+		task.wait(duration)
+
 		if LnotifyCount == notifyCount then
-			if closepressed == false and notificationPinned == false then
-				pinNotification:Disconnect()
-				Notification:TweenPosition(UDim2.new(1, Notification.Position.X.Offset, 1, 0), "InOut", "Quart", 0.5, true, nil)
+			if not closepressed and not notificationPinned then
+				if pinNotification then pinNotification:Disconnect() end
+				if timerLoop then timerLoop:Disconnect() end
+				TimerLabel.Text = ""
+				TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
+					Position = UDim2.new(1, -275, 1, 100)
+				}):Play()
 			end
 			notifyCount = 0
 		end
@@ -4081,6 +4254,121 @@ Keybinds.MouseButton1Click:Connect(function()
 	wait(0.5)
 	SettingsHolder.Visible = false
 end)
+
+local themePresets = {
+	Classic = {
+		shade1 = Color3.fromRGB(36, 36, 37),
+		shade2 = Color3.fromRGB(46, 46, 47),
+		shade3 = Color3.fromRGB(78, 78, 79),
+		text1 = Color3.new(1, 1, 1),
+		text2 = Color3.new(0, 0, 0),
+		scroll = Color3.fromRGB(78, 78, 79),
+	},
+	["Catppuccin Mocha"] = {
+		shade1 = Color3.fromHex("#11111b"),
+		shade2 = Color3.fromHex("#181825"),
+		shade3 = Color3.fromHex("#1e1e2e"),
+		text1 = Color3.fromHex("#cdd6f4"),
+		text2 = Color3.fromHex("#bac2de"),
+		scroll = Color3.fromHex("#585b70"),
+	},
+	Dracula = {
+    shade1 = Color3.fromHex("#282a36"),
+    shade2 = Color3.fromHex("#44475a"),
+    shade3 = Color3.fromHex("#6272a4"),
+	text1 = Color3.fromHex("#f8f8f2"),
+	text2 = Color3.fromHex("#282a36"),
+	scroll = Color3.fromHex("#bd93f9"),
+	},
+	Nord = {
+	    shade1 = Color3.fromHex("#2e3440"),
+	    shade2 = Color3.fromHex("#3b4252"),
+	    shade3 = Color3.fromHex("#4c566a"),
+	    text1 = Color3.fromHex("#d8dee9"),
+	    text2 = Color3.fromHex("#2e3440"),
+	    scroll = Color3.fromHex("#88c0d0"),
+	},
+	["Tokyo Night"] = {
+	    shade1 = Color3.fromHex("#1a1b26"),
+	    shade2 = Color3.fromHex("#24283b"),
+	    shade3 = Color3.fromHex("#373c58"),
+	    text1 = Color3.fromHex("#a9b1d6"),
+	    text2 = Color3.fromHex("#1a1b26"),
+	    scroll = Color3.fromHex("#7aa2f7"),
+	},
+	["One Dark"] = {
+	    shade1 = Color3.fromHex("#282c34"),
+	    shade2 = Color3.fromHex("#323842"),
+	    shade3 = Color3.fromHex("#4c5263"),
+	    text1 = Color3.fromHex("#abb2bf"),
+	    text2 = Color3.fromHex("#282c34"),
+	    scroll = Color3.fromHex("#61afef"),
+	},
+	["Rose Pine"] = {
+	    shade1 = Color3.fromHex("#191724"),
+	    shade2 = Color3.fromHex("#21202e"),
+	    shade3 = Color3.fromHex("#393552"),
+	    text1 = Color3.fromHex("#e0def4"),
+	    text2 = Color3.fromHex("#191724"),
+	    scroll = Color3.fromHex("#c4a7e7"),
+	},
+	Gruvbox = {
+	    shade1 = Color3.fromHex("#282828"),
+	    shade2 = Color3.fromHex("#3c3836"),
+	    shade3 = Color3.fromHex("#504945"),
+	    text1 = Color3.fromHex("#ebdbb2"),
+	    text2 = Color3.fromHex("#282828"),
+	    scroll = Color3.fromHex("#d79921"),
+	},
+}
+
+function applyTheme(name)
+	local theme = themePresets[name]
+	if not theme then notify("Theme error", "Theme not found") end
+	updateColors(theme.shade1, shade1)
+	updateColors(theme.shade2, shade2)
+	updateColors(theme.shade3, shade3)
+	updateColors(theme.text1, text1)
+	updateColors(theme.text2, text2)
+	updateColors(theme.scroll, scroll)
+	task.wait()
+	updatesaves()
+	notify("Theme", "Enabled " .. name)
+end
+
+ThemePresets.MouseButton1Click:Connect(function()
+	ThemePresetsFrame:TweenPosition(UDim2.new(0, 0, 0, 0), "InOut", "Quart", 0.5, true, nil)
+	wait(0.5)
+	SettingsHolder.Visible = false
+end)
+
+Close_5.MouseButton1Click:Connect(function()
+	SettingsHolder.Visible = true
+	ThemePresetsFrame:TweenPosition(UDim2.new(0, 0, 0, 175), "InOut", "Quart", 0.5, true, nil)
+end)
+
+local themeCount = 0
+for name, _ in pairs(themePresets) do
+	themeCount = themeCount + 1
+	local btn = ThemeExample:Clone()
+	btn.Name = name
+	btn.Parent = ThemeHolder
+	btn.Visible = true
+	btn.LayoutOrder = themeCount
+	btn.Text.Text = name
+	table.insert(shade2, btn)
+	table.insert(shade2, btn.Text)
+	table.insert(text1, btn.Text)
+
+	btn.Text.MouseButton1Click:Connect(function()
+		applyTheme(name)
+	end)
+end
+
+ThemeHolder.CanvasSize = UDim2.new(0, 0, 0, (themeCount * 24) + 16)
+if themeCount * 20 > ThemeHolder.AbsoluteSize.Y then
+	ThemeHolder.ScrollBarThickness = 8
+end
 
 Close.MouseButton1Click:Connect(function()
 	SettingsHolder.Visible = true
