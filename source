@@ -123,7 +123,7 @@ end)) or false]]
 --	["infiniteyield/assets/settings.png"] = "rbxassetid://1204397029"
 --}
 --CURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSION
-currentVersion = "1.2.6"
+currentVersion = "1.2.7"
 
 ScaledHolder = Instance.new("Frame")
 Scale = Instance.new("UIScale")
@@ -863,7 +863,7 @@ Logo.BackgroundTransparency = 1
 Logo.BorderSizePixel = 0
 Logo.Position = UDim2.new(0, 125, 0, 127)
 Logo.Size = UDim2.new(0, 10, 0, 10)
-Logo.Image = "rbxassetid://1352543873"
+Logo.Image = "rbxassetid://114631701481267" -- Logo Image
 Logo.ImageTransparency = 0
 Logo.ZIndex = 10
 
@@ -13509,7 +13509,7 @@ task.spawn(function()
     task.wait()
     pcall(function()
         Credits:TweenPosition(UDim2.new(0, 0, 0.9, 0), "Out", "Quart", 0.2)
-        Logo:TweenSizeAndPosition(UDim2.new(0, 175, 0, 175), UDim2.new(0, 37, 0, 45), "Out", "Quart", 0.3)
+        Logo:TweenSizeAndPosition(UDim2.new(0, 128, 0, 128), UDim2.new(0, 64, 0, 60.5), "Out", "Quart", 0.3)
         task.wait(1.05)
         local OutInfo = TweenInfo.new(1.6809, Enum.EasingStyle.Sine, Enum.EasingDirection.Out, 0, false, 0)
         TweenService:Create(Logo, OutInfo, {ImageTransparency = 1}):Play()
