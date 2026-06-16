@@ -122,7 +122,7 @@ end)) or false]]
 --	["infiniteyield/assets/settings.png"] = "rbxassetid://1204397029"
 --}
 --CURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSIONCURRENTVERSION
-currentVersion = "1.3.2"
+currentVersion = "1.3.3"
 
 ScaledHolder = Instance.new("Frame")
 Scale = Instance.new("UIScale")
@@ -311,6 +311,9 @@ text2 = {}
 placeholder = {}
 scroll = {}
 
+notifyDuration = 5
+notifyCorner = "bottomright"
+
 -- Main is gui of all
 
 ScaledHolder.Name = randomString() -- Whole menu/its stuff
@@ -468,7 +471,7 @@ SettingsHolder.BorderSizePixel = 0
 SettingsHolder.Size = UDim2.new(1,0,1,0)
 SettingsHolder.ScrollBarImageColor3 = Color3.fromRGB(78,78,79)
 SettingsHolder.BottomImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
-SettingsHolder.CanvasSize = UDim2.new(0, 0, 0, 265)
+SettingsHolder.CanvasSize = UDim2.new(0, 0, 0, 320)
 SettingsHolder.MidImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
 SettingsHolder.ScrollBarThickness = 8
 SettingsHolder.TopImage = "rbxasset://textures/ui/Scroll/scroll-middle.png"
@@ -546,13 +549,13 @@ function makeSettingsButton(name,iconID,off)
 end
 
 ColorsButton = makeSettingsButton("Customize colors","rbxassetid://127369887384101")
-ColorsButton.Position = UDim2.new(0, 5, 0, 55)
+ColorsButton.Position = UDim2.new(0, 5, 0, 110)
 ColorsButton.Size = UDim2.new(1, -10, 0, 25)
 ColorsButton.Name = "Colors"
 ColorsButton.Parent = SettingsHolder
 
 ThemePresets = makeSettingsButton("Theme presets", "rbxassetid://113234034461805")
-ThemePresets.Position = UDim2.new(0, 5, 0, 85)
+ThemePresets.Position = UDim2.new(0, 5, 0, 140)
 ThemePresets.Size = UDim2.new(1, -10, 0, 25)
 ThemePresets.Name = "ThemePresets"
 ThemePresets.Parent = SettingsHolder
@@ -636,13 +639,13 @@ table.insert(shade2, Close_5)
 table.insert(text1, Close_5)
 
 Keybinds = makeSettingsButton("Rebind keys","rbxassetid://121978468376124")
-Keybinds.Position = UDim2.new(0, 5, 0, 115)
+Keybinds.Position = UDim2.new(0, 5, 0, 170)
 Keybinds.Size = UDim2.new(1, -10, 0, 25)
 Keybinds.Name = "Keybinds"
 Keybinds.Parent = SettingsHolder
 
 Aliases = makeSettingsButton("Change aliases","rbxassetid://107047557421203")
-Aliases.Position = UDim2.new(0, 5, 0, 145)
+Aliases.Position = UDim2.new(0, 5, 0, 200)
 Aliases.Size = UDim2.new(1, -10, 0, 25)
 Aliases.Name = "Aliases"
 Aliases.Parent = SettingsHolder
@@ -682,22 +685,114 @@ On.ZIndex = 10
 table.insert(text2, On)
 
 Positions = makeSettingsButton("Manage waypoints", "rbxassetid://137091405832737")
-Positions.Position = UDim2.new(0, 5, 0, 175)
+Positions.Position = UDim2.new(0, 5, 0, 230)
 Positions.Size = UDim2.new(1, -10, 0, 25)
 Positions.Name = "Waypoints"
 Positions.Parent = SettingsHolder
 
 EventBind = makeSettingsButton("Change event binds", "rbxassetid://82061714010896")
-EventBind.Position = UDim2.new(0, 5, 0, 235)
+EventBind.Position = UDim2.new(0, 5, 0, 290)
 EventBind.Size = UDim2.new(1, -10, 0, 25)
 EventBind.Name = "EventBinds"
 EventBind.Parent = SettingsHolder
 
 Plugins = makeSettingsButton("Manage plugins", "rbxassetid://116361302503360")
-Plugins.Position = UDim2.new(0, 5, 0, 205)
+Plugins.Position = UDim2.new(0, 5, 0, 260)
 Plugins.Size = UDim2.new(1, -10, 0, 25)
 Plugins.Name = "Plugins"
 Plugins.Parent = SettingsHolder
+
+local NotifDurationRow = Instance.new("TextLabel")
+NotifDurationRow.Name = "NotifDuration"
+NotifDurationRow.Parent = SettingsHolder
+NotifDurationRow.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
+NotifDurationRow.BackgroundTransparency = 1
+NotifDurationRow.BorderSizePixel = 0
+NotifDurationRow.Position = UDim2.new(0, 5, 0, 55)
+NotifDurationRow.Size = UDim2.new(1, -10, 0, 20)
+NotifDurationRow.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+NotifDurationRow.TextSize = 14
+NotifDurationRow.Text = "Notif Duration"
+NotifDurationRow.TextXAlignment = Enum.TextXAlignment.Left
+NotifDurationRow.ZIndex = 10
+table.insert(shade2, NotifDurationRow)
+table.insert(text1, NotifDurationRow)
+
+local NotifDurationBox = Instance.new("TextBox")
+NotifDurationBox.Name = "DurationBox"
+NotifDurationBox.Parent = NotifDurationRow
+NotifDurationBox.BackgroundColor3 = Color3.fromRGB(78, 78, 79)
+NotifDurationBox.BorderSizePixel = 0
+NotifDurationBox.Position = UDim2.new(1, -30, 0, 0)
+NotifDurationBox.Size = UDim2.new(0, 30, 0, 20)
+NotifDurationBox.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+NotifDurationBox.TextSize = 14
+NotifDurationBox.Text = tostring(notifyDuration)
+NotifDurationBox.TextColor3 = Color3.new(0, 0, 0)
+NotifDurationBox.ClearTextOnFocus = false
+NotifDurationBox.ZIndex = 10
+table.insert(shade3, NotifDurationBox)
+table.insert(text2, NotifDurationBox)
+
+local cornerNames = {"bottomright", "bottomleft", "topright", "topleft"}
+local cornerAbbr = {bottomright = "Bot.Right", bottomleft = "Bot.Left", topright = "Top.Right", topleft = "Top.Left"}
+
+local NotifCornerRow = Instance.new("TextLabel")
+NotifCornerRow.Name = "NotifCorner"
+NotifCornerRow.Parent = SettingsHolder
+NotifCornerRow.BackgroundColor3 = Color3.fromRGB(46, 46, 47)
+NotifCornerRow.BackgroundTransparency = 1
+NotifCornerRow.BorderSizePixel = 0
+NotifCornerRow.Position = UDim2.new(0, 5, 0, 80)
+NotifCornerRow.Size = UDim2.new(1, -10, 0, 20)
+NotifCornerRow.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+NotifCornerRow.TextSize = 14
+NotifCornerRow.Text = "Notif Corner"
+NotifCornerRow.TextXAlignment = Enum.TextXAlignment.Left
+NotifCornerRow.ZIndex = 10
+table.insert(shade2, NotifCornerRow)
+table.insert(text1, NotifCornerRow)
+
+local NotifCornerCycler = Instance.new("TextButton")
+NotifCornerCycler.Name = "CornerCycler"
+NotifCornerCycler.Parent = NotifCornerRow
+NotifCornerCycler.BackgroundColor3 = Color3.fromRGB(78, 78, 79)
+NotifCornerCycler.BorderSizePixel = 0
+NotifCornerCycler.Position = UDim2.new(1, -65, 0, 0)
+NotifCornerCycler.Size = UDim2.new(0, 65, 0, 20)
+NotifCornerCycler.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+NotifCornerCycler.TextSize = 12
+NotifCornerCycler.Text = cornerAbbr[notifyCorner] or "Bot.Right"
+NotifCornerCycler.TextColor3 = Color3.new(0, 0, 0)
+NotifCornerCycler.ZIndex = 10
+table.insert(shade3, NotifCornerCycler)
+table.insert(text2, NotifCornerCycler)
+
+local function updateNotifCornerBtn()
+	NotifCornerCycler.Text = cornerAbbr[notifyCorner] or "Bot.Right"
+end
+
+NotifDurationBox.FocusLost:Connect(function()
+	local n = tonumber(NotifDurationBox.Text)
+	if n and n > 0 then
+		notifyDuration = n
+		NotifDurationBox.Text = tostring(n)
+	else
+		NotifDurationBox.Text = tostring(notifyDuration)
+	end
+	updatesaves()
+end)
+
+NotifCornerCycler.MouseButton1Click:Connect(function()
+	local idx = 1
+	for i, v in ipairs(cornerNames) do
+		if v == notifyCorner then idx = i break end
+	end
+	notifyCorner = cornerNames[(idx % #cornerNames) + 1]
+	updateNotifCornerBtn()
+	applyNotifyCorner()
+	updatesaves()
+end)
 
 Example.Name = "Example"
 Example.Parent = Holder
@@ -3095,6 +3190,8 @@ defaultsettings = {
 	currentText1 = {currentText1.R,currentText1.G,currentText1.B};
 	currentText2 = {currentText2.R,currentText2.G,currentText2.B};
 	currentScroll = {currentScroll.R,currentScroll.G,currentScroll.B};
+	notifyDuration = notifyDuration;
+	notifyCorner = notifyCorner;
 	eventBinds = eventEditor.SaveData()
 }
 
@@ -3246,6 +3343,8 @@ function saves()
 					if vtype(json.currentText1, "table") then currentText1 = Color3.new(json.currentText1[1],json.currentText1[2],json.currentText1[3]) end
 					if vtype(json.currentText2, "table") then currentText2 = Color3.new(json.currentText2[1],json.currentText2[2],json.currentText2[3]) end
 					if vtype(json.currentScroll, "table") then currentScroll = Color3.new(json.currentScroll[1],json.currentScroll[2],json.currentScroll[3]) end
+					if vtype(json.notifyDuration, "number") then notifyDuration = json.notifyDuration else notifyDuration = 5 end
+					if vtype(json.notifyCorner, "string") then notifyCorner = json.notifyCorner else notifyCorner = "bottomright" end
 					if vtype(json.eventBinds, "string") then loadedEventData = json.eventBinds end
 				end)
 				if not success then
@@ -3292,7 +3391,20 @@ function saves()
 	end
 end
 
+local notifyCornerPositions = {
+	bottomright = {anchorPoint = Vector2.new(1, 1), visible = UDim2.new(1, -275, 1, -12), hidden = UDim2.new(1, -275, 1,  100)},
+	bottomleft  = {anchorPoint = Vector2.new(0, 1), visible = UDim2.new(0,   15, 1, -12), hidden = UDim2.new(0,   15, 1,  100)},
+	topright    = {anchorPoint = Vector2.new(1, 0), visible = UDim2.new(1, -275, 0,  12), hidden = UDim2.new(1, -275, 0, -200)},
+	topleft     = {anchorPoint = Vector2.new(0, 0), visible = UDim2.new(0,   15, 0,  12), hidden = UDim2.new(0,   15, 0, -200)},
+}
+function applyNotifyCorner()
+	local npos = notifyCornerPositions[notifyCorner] or notifyCornerPositions.bottomright
+	Notification.AnchorPoint = npos.anchorPoint
+	Notification.Position = npos.hidden
+end
+
 saves()
+applyNotifyCorner()
 
 function updatesaves()
 	if nosaves == false and writefileExploit() then
@@ -3315,6 +3427,8 @@ function updatesaves()
 			currentText1 = {currentText1.R,currentText1.G,currentText1.B};
 			currentText2 = {currentText2.R,currentText2.G,currentText2.B};
 			currentScroll = {currentScroll.R,currentScroll.G,currentScroll.B};
+			notifyDuration = notifyDuration;
+			notifyCorner = notifyCorner;
 			eventBinds = eventEditor.SaveData()
 		}
 		writefileCooldown("IY_FE.iy", HttpService:JSONEncode(update))
@@ -3357,6 +3471,8 @@ function Time()
 end
 
 PrefixBox.Text = prefix
+NotifDurationBox.Text = tostring(notifyDuration)
+updateNotifCornerBtn()
 local SettingsOpen = false
 local isHidden = false
 
@@ -3412,13 +3528,16 @@ function notify(text, text2, length)
 		PinIcon.Image = "rbxassetid://84152083728286"
 		TimerLabel.Text = ""
 
+		local npos = notifyCornerPositions[notifyCorner] or notifyCornerPositions.bottomright
+		Notification.AnchorPoint = npos.anchorPoint
+
 		pinNotification = PinButton.MouseButton1Click:Connect(function()
 			notificationPinned = not notificationPinned
 			PinIcon.Image = notificationPinned and "rbxassetid://79775551915820" or "rbxassetid://84152083728286"
 		end)
 
 		TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
-			Position = UDim2.new(1, -275, 1, 100)
+			Position = npos.hidden
 		}):Play()
 		task.wait(0.35)
 
@@ -3438,15 +3557,15 @@ function notify(text, text2, length)
 			if timerLoop then timerLoop:Disconnect() end
 			TimerLabel.Text = ""
 			TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
-				Position = UDim2.new(1, -275, 1, 100)
+				Position = npos.hidden
 			}):Play()
 		end)
 
 		TweenService:Create(Notification, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-			Position = UDim2.new(1, -275, 1, -12)
+			Position = npos.visible
 		}):Play()
 
-		local duration = (length and isNumber(length)) and length or 5
+		local duration = (length and isNumber(length)) and length or notifyDuration
 		local remaining = duration
 
 		timerLoop = RunService.RenderStepped:Connect(function(dt)
@@ -3473,7 +3592,7 @@ function notify(text, text2, length)
 				if timerLoop then timerLoop:Disconnect() end
 				TimerLabel.Text = ""
 				TweenService:Create(Notification, TweenInfo.new(0.3, Enum.EasingStyle.Back, Enum.EasingDirection.In), {
-					Position = UDim2.new(1, -275, 1, 100)
+					Position = npos.hidden
 				}):Play()
 			end
 			notifyCount = 0
@@ -5012,6 +5131,7 @@ CMDs[#CMDs + 1] = {NAME = 'allowrejoin / allowrj [true/false] (CLIENT)', DESC = 
 CMDs[#CMDs + 1] = {NAME = 'cancelteleport / canceltp', DESC = 'Cancels teleports in progress'}
 CMDs[#CMDs + 1] = {NAME = 'volume / vol [0-10]', DESC = 'Adjusts your game volume on a scale of 0 to 10'}
 CMDs[#CMDs + 1] = {NAME = 'antilag / boostfps / lowgraphics', DESC = 'Lowers game quality to boost FPS'}
+CMDs[#CMDs + 1] = {NAME = 'removedecals / rmdecals', DESC = 'Removes all decals and textures from workspace (client-side)'}
 CMDs[#CMDs + 1] = {NAME = 'record / rec', DESC = 'Starts Roblox recorder'}
 CMDs[#CMDs + 1] = {NAME = 'screenshot / scrnshot', DESC = 'Takes a screenshot'}
 CMDs[#CMDs + 1] = {NAME = 'togglefullscreen / togglefs', DESC = 'Toggles fullscreen'}
@@ -5100,6 +5220,7 @@ CMDs[#CMDs + 1] = {NAME = 'joinlogs / jlogs', DESC = 'Log when people join'}
 CMDs[#CMDs + 1] = {NAME = 'chatlogswebhook / logswebhook [url]', DESC = 'Set a discord webhook for chatlogs to go to (provide no url to disable this)'}
 CMDs[#CMDs + 1] = {NAME = 'webhook / wh', DESC = 'Opens a menu to send a Discord webhook message'}
 CMDs[#CMDs + 1] = {NAME = 'chat / say [text]', DESC = 'Makes you chat a string (possible mute bypass)'}
+CMDs[#CMDs + 1] = {NAME = 'fakechat / fc [player] [text]', DESC = 'Shows a fake chat bubble above a player (client-side only)'}
 CMDs[#CMDs + 1] = {NAME = 'spam [text]', DESC = 'Makes you spam the chat'}
 CMDs[#CMDs + 1] = {NAME = 'unspam', DESC = 'Turns off spam'}
 CMDs[#CMDs + 1] = {NAME = 'whisper / pm [player] [text]', DESC = 'Makes you whisper a string to someone (possible mute bypass)'}
@@ -11219,6 +11340,17 @@ addcmd('chat',{'say'},function(args, speaker)
 	chatMessage(cString)
 end)
 
+addcmd('fakechat',{'fc'},function(args, speaker)
+	local players = getPlayer(args[1], speaker)
+	local msg = getstring(2, args)
+	if msg == "" then return notify("Fake Chat", "Usage: fakechat [player] [message]") end
+	for _, v in pairs(players) do
+		local char = Players[v].Character
+		if char and char:FindFirstChild("Head") then
+			pcall(function() ChatService:Chat(char.Head, msg) end)
+		end
+	end
+end)
 
 spamming = false
 spamspeed = 1
@@ -13669,15 +13801,34 @@ local webhookMenu = (function()
 		{3,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Title",Parent={2},Size=UDim2.new(1,0,0.95,0),Text="Webhook",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=14,ZIndex=10,}},
 		{4,"TextButton",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="Close",Parent={2},Position=UDim2.new(1,-20,0,0),Size=UDim2.new(0,20,0,20),Text="",ZIndex=10,}},
 		{5,"ImageLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Name="CloseImage",Image="rbxassetid://116396312853810",Parent={4},Position=UDim2.new(0,5,0,5),Size=UDim2.new(0,10,0,10),ZIndex=10,ImageColor3=currentText1 or Color3.new(1,1,1)}},
-		{6,"Frame",{BackgroundColor3=Color3.new(0.14117647707462,0.14117647707462,0.14509804546833),BorderSizePixel=0,Name="Content",Parent={1},Position=UDim2.new(0,0,0,20),Size=UDim2.new(1,0,0,195),ZIndex=10,}},
+		{6,"Frame",{BackgroundColor3=Color3.new(0.14117647707462,0.14117647707462,0.14509804546833),BorderSizePixel=0,Name="Content",Parent={1},Position=UDim2.new(0,0,0,20),Size=UDim2.new(1,0,0,358),ZIndex=10,}},
+		-- Required fields
 		{7,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="UrlLabel",Parent={6},Position=UDim2.new(0,8,0,8),Size=UDim2.new(1,-16,0,14),Text="Webhook URL",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
 		{14,"Frame",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,ClipsDescendants=true,Name="UrlClip",Parent={6},Position=UDim2.new(0,5,0,26),Size=UDim2.new(1,-10,0,22),ZIndex=10,}},
 		{8,"TextBox",{BackgroundTransparency=1,BorderSizePixel=0,ClearTextOnFocus=false,Font=3,Name="UrlBox",Parent={14},PlaceholderColor3=currentText2 or Color3.new(0,0,0),PlaceholderText="https://discord.com/api/webhooks/...",Position=UDim2.new(0,0,0,0),Size=UDim2.new(1,0,1,0),Text="",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
 		{12,"UIPadding",{Parent={8},PaddingLeft=UDim.new(0,6)}},
 		{9,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="MsgLabel",Parent={6},Position=UDim2.new(0,8,0,56),Size=UDim2.new(1,-16,0,14),Text="Message",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
-		{10,"TextBox",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,ClearTextOnFocus=false,Font=3,MultiLine=true,Name="MsgBox",Parent={6},PlaceholderColor3=currentText2 or Color3.new(0,0,0),PlaceholderText="Message...",Position=UDim2.new(0,5,0,74),Size=UDim2.new(1,-10,0,80),Text="",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
+		{10,"TextBox",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,ClearTextOnFocus=false,Font=3,MultiLine=true,Name="MsgBox",Parent={6},PlaceholderColor3=currentText2 or Color3.new(0,0,0),PlaceholderText="Message...",Position=UDim2.new(0,5,0,74),Size=UDim2.new(1,-10,0,60),Text="",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextWrapped=true,TextXAlignment=0,TextYAlignment=0,ZIndex=10,}},
 		{13,"UIPadding",{Parent={10},PaddingLeft=UDim.new(0,6),PaddingTop=UDim.new(0,6),}},
-		{11,"TextButton",{BackgroundColor3=Color3.fromRGB(88,101,242),BorderSizePixel=0,Font=4,Name="SendBtn",Parent={6},Position=UDim2.new(1,-75,0,162),Size=UDim2.new(0,70,0,25),Text="Send",TextColor3=Color3.new(1,1,1),TextSize=14,ZIndex=10,}},
+		-- Optional: username / avatar URL
+		{15,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="UsernameLabel",Parent={6},Position=UDim2.new(0,8,0,142),Size=UDim2.new(1,-16,0,14),Text="Username (optional)",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{16,"Frame",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,ClipsDescendants=true,Name="UsernameClip",Parent={6},Position=UDim2.new(0,5,0,160),Size=UDim2.new(1,-10,0,22),ZIndex=10,}},
+		{17,"TextBox",{BackgroundTransparency=1,BorderSizePixel=0,ClearTextOnFocus=false,Font=3,Name="UsernameBox",Parent={16},PlaceholderColor3=currentText2 or Color3.new(0,0,0),PlaceholderText="Bot Name...",Position=UDim2.new(0,0,0,0),Size=UDim2.new(1,0,1,0),Text="",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{18,"UIPadding",{Parent={17},PaddingLeft=UDim.new(0,6)}},
+		{19,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="AvatarLabel",Parent={6},Position=UDim2.new(0,8,0,190),Size=UDim2.new(1,-16,0,14),Text="Avatar URL (optional)",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{20,"Frame",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,ClipsDescendants=true,Name="AvatarClip",Parent={6},Position=UDim2.new(0,5,0,208),Size=UDim2.new(1,-10,0,22),ZIndex=10,}},
+		{21,"TextBox",{BackgroundTransparency=1,BorderSizePixel=0,ClearTextOnFocus=false,Font=3,Name="AvatarBox",Parent={20},PlaceholderColor3=currentText2 or Color3.new(0,0,0),PlaceholderText="https://files.catbox.moe/uujsu3.png",Position=UDim2.new(0,0,0,0),Size=UDim2.new(1,0,1,0),Text="",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{22,"UIPadding",{Parent={21},PaddingLeft=UDim.new(0,6)}},
+		-- Optional: embed
+		{23,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="EmbedTitleLabel",Parent={6},Position=UDim2.new(0,8,0,238),Size=UDim2.new(1,-16,0,14),Text="Embed Title (optional)",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{24,"Frame",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,ClipsDescendants=true,Name="EmbedTitleClip",Parent={6},Position=UDim2.new(0,5,0,256),Size=UDim2.new(1,-10,0,22),ZIndex=10,}},
+		{25,"TextBox",{BackgroundTransparency=1,BorderSizePixel=0,ClearTextOnFocus=false,Font=3,Name="EmbedTitleBox",Parent={24},PlaceholderColor3=currentText2 or Color3.new(0,0,0),PlaceholderText="Title...",Position=UDim2.new(0,0,0,0),Size=UDim2.new(1,0,1,0),Text="",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{26,"UIPadding",{Parent={25},PaddingLeft=UDim.new(0,6)}},
+		{27,"TextLabel",{BackgroundColor3=Color3.new(1,1,1),BackgroundTransparency=1,Font=3,Name="EmbedColorLabel",Parent={6},Position=UDim2.new(0,8,0,286),Size=UDim2.new(1,-16,0,14),Text="Embed Color (optional, e.g. #5865f2)",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{28,"Frame",{BackgroundColor3=Color3.new(0.1803921610117,0.1803921610117,0.1843137294054),BorderSizePixel=0,ClipsDescendants=true,Name="EmbedColorClip",Parent={6},Position=UDim2.new(0,5,0,304),Size=UDim2.new(1,-10,0,22),ZIndex=10,}},
+		{29,"TextBox",{BackgroundTransparency=1,BorderSizePixel=0,ClearTextOnFocus=false,Font=3,Name="EmbedColorBox",Parent={28},PlaceholderColor3=currentText2 or Color3.new(0,0,0),PlaceholderText="#5865f2",Position=UDim2.new(0,0,0,0),Size=UDim2.new(1,0,1,0),Text="",TextColor3=currentText1 or Color3.new(1,1,1),TextSize=13,TextXAlignment=0,ZIndex=10,}},
+		{30,"UIPadding",{Parent={29},PaddingLeft=UDim.new(0,6)}},
+		{11,"TextButton",{BackgroundColor3=Color3.fromRGB(88,101,242),BorderSizePixel=0,Font=4,Name="SendBtn",Parent={6},Position=UDim2.new(1,-75,0,326),Size=UDim2.new(0,70,0,25),Text="Send",TextColor3=Color3.new(1,1,1),TextSize=14,ZIndex=10,}},
 	})
 	table.insert(shade2, main.TopBar)
 	table.insert(text1, main.TopBar.Title)
@@ -13691,6 +13842,25 @@ local webhookMenu = (function()
 	table.insert(shade2, main.Content.MsgBox)
 	table.insert(text1, main.Content.MsgBox)
 	table.insert(placeholder, main.Content.MsgBox)
+	table.insert(text1, main.Content.UsernameLabel)
+	table.insert(shade2, main.Content.UsernameClip)
+	table.insert(text1, main.Content.UsernameClip.UsernameBox)
+	table.insert(placeholder, main.Content.UsernameClip.UsernameBox)
+	table.insert(text1, main.Content.AvatarLabel)
+	table.insert(shade2, main.Content.AvatarClip)
+	table.insert(text1, main.Content.AvatarClip.AvatarBox)
+	table.insert(placeholder, main.Content.AvatarClip.AvatarBox)
+	table.insert(text1, main.Content.EmbedTitleLabel)
+	table.insert(shade2, main.Content.EmbedTitleClip)
+	table.insert(text1, main.Content.EmbedTitleClip.EmbedTitleBox)
+	table.insert(placeholder, main.Content.EmbedTitleClip.EmbedTitleBox)
+	table.insert(text1, main.Content.EmbedColorLabel)
+	table.insert(shade2, main.Content.EmbedColorClip)
+	table.insert(text1, main.Content.EmbedColorClip.EmbedColorBox)
+	table.insert(placeholder, main.Content.EmbedColorClip.EmbedColorBox)
+	main.Content.EmbedTitleClip.EmbedTitleBox:GetPropertyChangedSignal("Text"):Connect(function()
+		main.Content.MsgLabel.Text = main.Content.EmbedTitleClip.EmbedTitleBox.Text ~= "" and "Description" or "Message"
+	end)
 	main.Name = randomString()
 	main.TopBar.Close.MouseButton1Click:Connect(function()
 		main:TweenPosition(UDim2.new(0.5,-150,0,-500), "InOut", "Quart", 0.5, true, nil)
@@ -13699,19 +13869,38 @@ local webhookMenu = (function()
 		local url = main.Content.UrlClip.UrlBox.Text
 		local msg = main.Content.MsgBox.Text
 		if url == "" or msg == "" then
-			notify("Webhook", "Please fill in both fields")
+			notify("Webhook", "Please fill in URL and message")
 			return
 		end
 		if not httprequest then
 			notify("Uhh how did you get here", "Didn't the command stop you from getting here? (missing request)")
 			return
 		end
+		local payload = {}
+		local username = main.Content.UsernameClip.UsernameBox.Text
+		local avatarUrl = main.Content.AvatarClip.AvatarBox.Text
+		local embedTitle = main.Content.EmbedTitleClip.EmbedTitleBox.Text
+		local embedColor = main.Content.EmbedColorClip.EmbedColorBox.Text
+		if username ~= "" then payload.username = username end
+		if avatarUrl ~= "" then payload.avatar_url = avatarUrl end
+		if embedTitle ~= "" then
+			local colorInt = nil
+			if embedColor ~= "" then
+				local hex = embedColor:gsub("^#", "")
+				colorInt = tonumber(hex, 16)
+			end
+			local embed = {title = embedTitle, description = msg}
+			if colorInt then embed.color = colorInt end
+			payload.embeds = {embed}
+		else
+			payload.content = msg
+		end
 		local ok, err = pcall(function()
 			httprequest({
 				Url = url,
 				Method = "POST",
 				Headers = {["Content-Type"] = "application/json"},
-				Body = HttpService:JSONEncode({content = msg})
+				Body = HttpService:JSONEncode(payload)
 			})
 		end)
 		if ok then
@@ -13730,7 +13919,18 @@ addcmd('webhook', {'wh'}, function(args, speaker)
 	if not httprequest then
 		return notify("Incompatible Exploit", "Your exploit does not support this command (missing request)")
 	end
-	webhookMenu:TweenPosition(UDim2.new(0.5,-150,0.5,-108), "InOut", "Quart", 0.5, true, nil)
+	webhookMenu:TweenPosition(UDim2.new(0.5,-150,0.5,-189), "InOut", "Quart", 0.5, true, nil)
+end)
+
+addcmd('removedecals', {'rmdecals'}, function(args, speaker)
+	local count = 0
+	for _, v in pairs(workspace:GetDescendants()) do
+		if v:IsA("Decal") or v:IsA("Texture") then
+			v:Destroy()
+			count = count + 1
+		end
+	end
+	notify("Remove Decals", "Removed " .. count .. " decal(s) from workspace")
 end)
 
 if IsOnMobile then
